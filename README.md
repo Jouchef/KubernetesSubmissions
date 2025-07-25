@@ -1,7 +1,7 @@
-#Kubernetes submissions
+# Kubernetes submissions
 
-##Exercises
+## Exercises
 
-###CHAPTER 2
+### CHAPTER 2
 - [1.1](https://github.com/Jouchef/KubernetesSubmissions)
 
