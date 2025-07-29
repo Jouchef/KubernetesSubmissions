@@ -24,10 +24,16 @@
 | ------- | ----- |
 | kubectl config use-context CLUSTERNAME | Change context to toher cluster |
 | kubectl explain RESOURCE | Get explanation to the resource |
+| kubectl describe RESOURCE | shows all specs of the resource |
 | kubectl get RESOURCE | List all objects of that type |
 | kubectl logs -f PODNAME | see the output of the pod |
 | kubectl delete deployment DEPNAME | Delete the deployment |
 | kubectl apply -f FILEPATH-TO-YAML | create or modify deployment / service according to the YAML |
+| kubectl config view --minify --raw | get kubeconfig for example to use with lens |
+| kubectl port-forward PODNAME LOCALPORT:APPPORT | Create temporary access to software for example debugging purposes |
+|kubectl create secret generic SECRETNAME --from-env-file=.env | Use your .env file to bring secret to the cluster |
+
+
 
 
 

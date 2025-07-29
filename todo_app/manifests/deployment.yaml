@@ -14,4 +14,5 @@ spec:
     spec:
       containers:
         - name: server-container
-          image: jouchef/server:1.2
+          image: jouchef/server:1.5
+          #imagePullPolicy: Always
