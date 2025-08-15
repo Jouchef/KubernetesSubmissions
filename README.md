@@ -8,7 +8,7 @@
 - [1.3](https://github.com/Jouchef/KubernetesSubmissions/tree/1.3/Log_output)
 - [1.4](https://github.com/Jouchef/KubernetesSubmissions/tree/1.4/todo_app)
 - [1.5](https://github.com/Jouchef/KubernetesSubmissions/tree/1.5/todo_app)
-
+- [1.6](https://github.com/Jouchef/KubernetesSubmissions/tree/1.6/todo_app)
 
 
 ## Commands
