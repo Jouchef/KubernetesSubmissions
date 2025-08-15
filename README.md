@@ -33,8 +33,8 @@
 | kubectl config view --minify --raw | get kubeconfig for example to use with lens |
 | kubectl port-forward PODNAME LOCALPORT:APPPORT | Create temporary access to software for example debugging purposes |
 |kubectl create secret generic SECRETNAME --from-env-file=.env | Use your .env file to bring secret to the cluster |
-
-
+|kubectl create secret generic SECRETNAME --from-literal=KEY=VALUE|Save variable to the cluster. After this add details to the deployment configuration yaml.|
+|kubectl get deployment DEPNAME -o yaml|Get the deployments info in yaml format.|
 
 
 
@@ -45,6 +45,6 @@
 
 - cluster: group of nodes / containers (server or agent)
 - deployment: resource that controls pods creation, updating and scaling
-- Resource: pod, service, node, deployment, 
+- Resource: pod, service (svc), node, deployment, 
 - Nodeport: Port that is available outside. It has to be between 30080 - 32767
 - Service: Ensures that application is accessible and secured. Handles routing, load balancing... 
