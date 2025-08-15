@@ -16,3 +16,9 @@ spec:
         - name: server-container
           image: jouchef/server:1.5
           #imagePullPolicy: Always
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: server-secret
+                  key: PORT

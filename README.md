@@ -39,10 +39,12 @@
 
 
 
-## Key conscepts
+## Key concepts
 
 ### Part II
 
 - cluster: group of nodes / containers (server or agent)
 - deployment: resource that controls pods creation, updating and scaling
 - Resource: pod, service, node, deployment, 
+- Nodeport: Port that is available outside. It has to be between 30080 - 32767
+- Service: Ensures that application is accessible and secured. Handles routing, load balancing... 
