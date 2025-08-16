@@ -1,7 +1,8 @@
 
-0. Add .env -file that has the PORT variable in it. 
-1. Make sure your cluster is running
-2. ```kubectl apply -f manifests/deployment.yaml``` This adds server deployment to the cluster.
-3. ```kubectl apply -f manifests/service.yaml``` This configures network service to the cluster.
-4. You can inspect the logs with ```kubectl logs -f server-dep-......``` tab for dots. 
-5. Now you can see the web page in [localhost:LOCAL-PORT](http://localhost:3000/)
+ 
+1. ```k3d cluster create --port 8082:30080@agent:0 -p 8081:80@loadbalancer --agents 2``` create cluster with these specs 
+2. ```kubectl create secret generic server-secret --from-literal=PORT=3000``` You can check your secrets with ```kubectl get secrets```
+2. ```kubectl apply -f manifests``` Run this in todo_app folder  
+5. Now you can see the web page in [localhost:LOCAL-PORT](http://localhost:8081/)
+6. ```kubectl get ing``` If you have multiple ingresses you should delete the others so they dont interfere with each other
+
