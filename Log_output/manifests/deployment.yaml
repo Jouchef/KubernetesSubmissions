@@ -14,4 +14,10 @@ spec:
     spec:
       containers:
         - name: log-output-container
-          image: jouchef/log_output:1.1
+          image: jouchef/log_output:1.2
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: log-output-secret
+                  key: PORT

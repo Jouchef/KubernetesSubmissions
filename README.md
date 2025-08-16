@@ -9,7 +9,7 @@
 - [1.4](https://github.com/Jouchef/KubernetesSubmissions/tree/1.4/todo_app)
 - [1.5](https://github.com/Jouchef/KubernetesSubmissions/tree/1.5/todo_app)
 - [1.6](https://github.com/Jouchef/KubernetesSubmissions/tree/1.6/todo_app)
-
+- [1.7](https://github.com/Jouchef/KubernetesSubmissions/tree/1.7/Log_output)
 
 ## Commands
 
@@ -35,7 +35,8 @@
 |kubectl create secret generic SECRETNAME --from-env-file=.env | Use your .env file to bring secret to the cluster |
 |kubectl create secret generic SECRETNAME --from-literal=KEY=VALUE|Save variable to the cluster. After this add details to the deployment configuration yaml.|
 |kubectl get deployment DEPNAME -o yaml|Get the deployments info in yaml format.|
-
+|kubectl exec -it PODNAME -- printenv| See all variables used in pod. Can be used with grep command |
+|kubectl rollout restart deployment DEPNAME| Restart a deployment when envs updated. |
 
 
 
