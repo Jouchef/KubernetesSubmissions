@@ -12,6 +12,8 @@
 - [1.7](https://github.com/Jouchef/KubernetesSubmissions/tree/1.7/Log_output)
 - [1.8](https://github.com/Jouchef/KubernetesSubmissions/tree/1.8/todo_app)
 - [1.9](https://github.com/Jouchef/KubernetesSubmissions/tree/1.9/pingpong) 
+- [1.10](https://github.com/Jouchef/KubernetesSubmissions/tree/1.10/Log_output)
+  
 
 ## Commands
 
@@ -51,3 +53,14 @@
 - Resource: pod, service (svc), node, deployment, 
 - Nodeport: Port that is available outside. It has to be between 30080 - 32767
 - Service: Ensures that application is accessible and secured. Handles routing, load balancing... 
+- pod: Pod can have one or multiple containers running inside of it. 
+- Ingress: Ingress is a resource that handles routing to the running services inside of a cluster according to the set rules.
+
+
+## Problems and fixes for them
+- Suddenly could not pull image from Dockerhub when deploying the application. Did work earlier. Pulling with Docker commands worked. 
+  - Errors: 
+    - ```ImagePullBackOff```, 
+    - ```failed to do request: Head "https://registry-1.docker.io/v2/jouchef/log_creator/manifests/1.10.1": dial tcp: lookup registry-1.docker.io: Try again```
+  - Fix: ```k3d cluster stop CLUSTER``` ```k3d cluster start CLUSTER```
+  - This fixed the problem for me. 
