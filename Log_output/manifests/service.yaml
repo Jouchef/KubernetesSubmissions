@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: log-output-svc
+  name: logger-svc
 spec:
   type: ClusterIP
   selector:
-    app: log_output
+    app: logger
   ports:
     - port: 2345
       protocol: TCP
-      targetPort: 3001
+      targetPort: 3004

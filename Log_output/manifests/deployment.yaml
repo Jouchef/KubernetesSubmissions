@@ -1,23 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-output-dep
+  name: logger-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log_output
+      app: logger
   template:
     metadata:
       labels:
-        app: log_output
+        app: logger
     spec:
+      volumes:
+        - name: log-volume
+          emptyDir: {}
       containers:
-        - name: log-output-container
-          image: jouchef/log_output:1.2
+        - name: log-creator-container
+          image: jouchef/log-creator:1.10
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
+        - name: log-reader-container
+          image: jouchef/log-reader:1.10.1
           env:
             - name: PORT
-              valueFrom:
-                secretKeyRef:
-                  name: log-output-secret
-                  key: PORT
+              value: "3004"
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
