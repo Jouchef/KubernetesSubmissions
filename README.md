@@ -13,34 +13,36 @@
 - [1.8](https://github.com/Jouchef/KubernetesSubmissions/tree/1.8/todo_app)
 - [1.9](https://github.com/Jouchef/KubernetesSubmissions/tree/1.9/pingpong) 
 - [1.10](https://github.com/Jouchef/KubernetesSubmissions/tree/1.10/Log_output)
-  
+- [1.11](https://github.com/Jouchef/KubernetesSubmissions/tree/1.11/Log_output)
 
 ## Commands
 
 ### K3D
-| Command | about |
-| ------- | ----- |
-| k3d cluster start / stop | Start ands stops current cluster | 
-| k3d image import | Import docker image to the cluster |
-| k3d cluster create / delete / list /  edit | Modify cluster in some manner |
+| Command                                    | about                              |
+| ------------------------------------------ | ---------------------------------- |
+| k3d cluster start / stop                   | Start ands stops current cluster   |
+| k3d image import                           | Import docker image to the cluster |
+| k3d cluster create / delete / list /  edit | Modify cluster in some manner      |
 
 ### Kubectl
-| Command | about |
-| ------- | ----- |
-| kubectl config use-context CLUSTERNAME | Change context to toher cluster |
-| kubectl explain RESOURCE | Get explanation to the resource |
-| kubectl describe RESOURCE | shows all specs of the resource |
-| kubectl get RESOURCE | List all objects of that type |
-| kubectl logs -f PODNAME | see the output of the pod |
-| kubectl delete deployment DEPNAME | Delete the deployment |
-| kubectl apply -f FILEPATH-TO-YAML | create or modify deployment / service according to the YAML |
-| kubectl config view --minify --raw | get kubeconfig for example to use with lens |
-| kubectl port-forward PODNAME LOCALPORT:APPPORT | Create temporary access to software for example debugging purposes |
-|kubectl create secret generic SECRETNAME --from-env-file=.env | Use your .env file to bring secret to the cluster |
-|kubectl create secret generic SECRETNAME --from-literal=KEY=VALUE|Save variable to the cluster. After this add details to the deployment configuration yaml.|
-|kubectl get deployment DEPNAME -o yaml|Get the deployments info in yaml format.|
-|kubectl exec -it PODNAME -- printenv| See all variables used in pod. Can be used with grep command |
-|kubectl rollout restart deployment DEPNAME| Restart a deployment when envs updated. |
+| Command                                                           | about                                                                                      |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| kubectl config use-context CLUSTERNAME                            | Change context to toher cluster                                                            |
+| kubectl explain RESOURCE                                          | Get explanation to the resource                                                            |
+| kubectl describe RESOURCE                                         | shows all specs of the resource                                                            |
+| kubectl get RESOURCE                                              | List all objects of that type                                                              |
+| kubectl logs -f PODNAME                                           | see the output of the pod                                                                  |
+| kubectl delete deployment DEPNAME                                 | Delete the deployment                                                                      |
+| kubectl apply -f FILEPATH-TO-YAML                                 | create or modify deployment / service according to the YAML                                |
+| kubectl config view --minify --raw                                | get kubeconfig for example to use with lens                                                |
+| kubectl port-forward PODNAME LOCALPORT:APPPORT                    | Create temporary access to software for example debugging purposes                         |
+| kubectl create secret generic SECRETNAME --from-env-file=.env     | Use your .env file to bring secret to the cluster                                          |
+| kubectl create secret generic SECRETNAME --from-literal=KEY=VALUE | Save variable to the cluster. After this add details to the deployment configuration yaml. |
+| kubectl get deployment DEPNAME -o yaml                            | Get the deployments info in yaml format.                                                   |
+| kubectl exec -it PODNAME -- printenv                              | See all variables used in pod. Can be used with grep command                               |
+| kubectl rollout restart deployment DEPNAME                        | Restart a deployment when envs updated.                                                    |
+| kubectl exec -it DEPLOYMENTNAME -- bash                           | Run commands inside the deployment for troubleshooting                                     |
+
 
 
 

@@ -14,15 +14,16 @@ spec:
     spec:
       volumes:
         - name: log-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: ping-claim
       containers:
         - name: log-creator-container
-          image: jouchef/log-creator:1.10
+          image: jouchef/log-creator:1.11.1
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
         - name: log-reader-container
-          image: jouchef/log-reader:1.10.1
+          image: jouchef/log-reader:1.11
           env:
             - name: PORT
               value: "3004"

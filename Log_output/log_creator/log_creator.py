@@ -8,8 +8,8 @@ def create_rand_string(length = 10):
 
 def update_file(random_string):
     time_stamp = time.strftime("%H:%M:%S", time.localtime())
-    with open("/app/logs/log.txt", "a") as f:
-        f.write(f"[{time_stamp}] {random_string}\n")
+    with open("/app/logs/log.txt", "w") as f:
+        f.write(f"[{time_stamp}] {random_string}")
         print(f"[{time_stamp}] {random_string} written to /app/logs/log.txt")
 
 

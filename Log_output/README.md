@@ -1,7 +1,13 @@
+This deployment works in conjuction with the pingpong deployment. This deployment gets the ping amount from the shared PV
+
+
+
+
 1. ```k3d cluster create --port 8082:30080@agent:0 -p 8081:80@loadbalancer --agents 2``` create cluster with these specs 
-2. If you have deployment with the same name running you can delete it with ```kubectl delete deployment logger-dep```
-3. ```kubectl apply -f manifests``` run this command in Log_output folder
-4. [8081/logs](http://localhost:8081/logs) Here you should be able to see the website 
+2. Make sure that this command has been ran ```docker exec k3d-k3s-default-agent-0 mkdir -p /tmp/kube``` This creates directory for the PV
+3. PV needs to be applied from: ```/admin/manifests``` with ```kubectl apply -f persistentVolume.yaml```
+4. ```kubectl apply -f manifests``` run this command in Log_output folder
+5. [8081/logs](http://localhost:8081/logs) Here you should be able to see the website 
 
 
 ```kubectl get ing``` If you have multiple ingresses you should delete the others so they dont interfere with each other
