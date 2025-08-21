@@ -14,6 +14,7 @@
 - [1.9](https://github.com/Jouchef/KubernetesSubmissions/tree/1.9/pingpong) 
 - [1.10](https://github.com/Jouchef/KubernetesSubmissions/tree/1.10/Log_output)
 - [1.11](https://github.com/Jouchef/KubernetesSubmissions/tree/1.11/Log_output)
+- [1.12](https://github.com/Jouchef/KubernetesSubmissions/tree/1.12/todo_app)
 
 ## Commands
 
@@ -29,7 +30,7 @@
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | kubectl config use-context CLUSTERNAME                            | Change context to toher cluster                                                            |
 | kubectl explain RESOURCE                                          | Get explanation to the resource                                                            |
-| kubectl describe RESOURCE                                         | shows all specs of the resource                                                            |
+| kubectl describe RESOURCE RESOURCENAME                            | shows all specs of the resource                                                            |
 | kubectl get RESOURCE                                              | List all objects of that type                                                              |
 | kubectl logs -f PODNAME                                           | see the output of the pod                                                                  |
 | kubectl delete deployment DEPNAME                                 | Delete the deployment                                                                      |
@@ -50,13 +51,15 @@
 
 ### Part II
 
-- cluster: group of nodes / containers (server or agent)
-- deployment: resource that controls pods creation, updating and scaling
-- Resource: pod, service (svc), node, deployment, 
-- Nodeport: Port that is available outside. It has to be between 30080 - 32767
-- Service: Ensures that application is accessible and secured. Handles routing, load balancing... 
-- pod: Pod can have one or multiple containers running inside of it. 
-- Ingress: Ingress is a resource that handles routing to the running services inside of a cluster according to the set rules.
+- **cluster:** group of nodes / containers (server or agent)
+- **deployment:** resource that controls pods creation, updating and scaling
+- **Resource:** pod, service (svc), node, deployment, PV, PVC, 
+- **Nodeport:** Port that is available outside. It has to be between 30080 - 32767
+- **Service:** Ensures that application is accessible and secured. Handles routing, load balancing... 
+- **pod:** Pod can have one or multiple containers running inside of it. 
+- **Ingress:** Ingress is a resource that handles routing to the running services inside of a cluster according to the set rules.
+- **PersistentVolume (PV):** Defines space for filestorage. Can be stored in different storage mediums. Pods can claim these with *PVC's*
+- **PersistentVolumeClaim (PVC):** This allows a pod to claim storagespace from a PV.
 
 
 ## Problems and fixes for them

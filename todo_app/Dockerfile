@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 #-u is needed so the prints come up. Otherwise they dont show in real time.
-CMD ["python", "-u", "server.py"]
+CMD ["python", "-u", "app.py"]

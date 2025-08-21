@@ -12,13 +12,16 @@ spec:
       labels:
         app: server
     spec:
+      volumes:
+        - name: server-volume
+          persistentVolumeClaim:
+            claimName: server-claim
       containers:
         - name: server-container
-          image: jouchef/server:1.5
-          #imagePullPolicy: Always
+          image: jouchef/server:1.12
           env:
             - name: PORT
-              valueFrom:
-                secretKeyRef:
-                  name: server-secret
-                  key: PORT
+              value: "3006"
+          volumeMounts:
+            - name: server-volume
+              mountPath: /app/static
