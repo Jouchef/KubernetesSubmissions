@@ -1,10 +1,11 @@
-import time
 from flask import Flask
 import os
+import requests
 
 app = Flask(__name__)
 @app.route("/logs")
-def read_file():
+def get_pings():
+
     if not os.path.exists("/app/logs/log.txt"):
         return "log.txt not found", 404
     with open("/app/logs/log.txt", "r") as f:
@@ -13,14 +14,13 @@ def read_file():
         print(timeAndCode)
         timeAndCode = timeAndCode.replace("\n", "<br>")
 
-    if not os.path.exists("/app/logs/pings.txt"):
-        return "pings.txt not found", 404
-    with open("/app/logs/pings.txt", "r") as f:
-        pings = int(f.read().strip())
+    pongs = requests.get(f"http://pingpong-svc:{svc_port}/pingpong").text
+    pongs = pongs[5:]
 
-    return f"{timeAndCode} <br> ping / pongs: {pings}"
+    return f"{timeAndCode} <br> Ping / Pongs: {pongs}"
 
     
 if __name__ == "__main__":
+    svc_port = int(os.environ.get("SVC-PORT", "2345"))
     port = int(os.environ.get("PORT", "3004"))
     app.run(host="0.0.0.0", port=port)
