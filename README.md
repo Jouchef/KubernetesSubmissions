@@ -16,7 +16,9 @@
 - [1.11](https://github.com/Jouchef/KubernetesSubmissions/tree/1.11/Log_output)
 - [1.12](https://github.com/Jouchef/KubernetesSubmissions/tree/1.12/todo_app)
 - [1.13](https://github.com/Jouchef/KubernetesSubmissions/tree/1.13/todo_app)
-- [1.14](https://github.com/Jouchef/KubernetesSubmissions/tree/1.14/Log_output)
+
+### CHAPTER 3
+- [2.1](https://github.com/Jouchef/KubernetesSubmissions/tree/2.1/Log_output)
 
 ## Commands
 
