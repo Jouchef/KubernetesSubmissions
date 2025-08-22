@@ -15,6 +15,7 @@
 - [1.10](https://github.com/Jouchef/KubernetesSubmissions/tree/1.10/Log_output)
 - [1.11](https://github.com/Jouchef/KubernetesSubmissions/tree/1.11/Log_output)
 - [1.12](https://github.com/Jouchef/KubernetesSubmissions/tree/1.12/todo_app)
+- [1.13](https://github.com/Jouchef/KubernetesSubmissions/tree/1.13/todo_app)
 
 ## Commands
 
@@ -44,6 +45,20 @@
 | kubectl rollout restart deployment DEPNAME                        | Restart a deployment when envs updated.                                                    |
 | kubectl exec -it DEPLOYMENTNAME -- bash                           | Run commands inside the deployment for troubleshooting                                     |
 
+
+### Docker
+| Command                     | About                                                                                                      |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| docker exec -it NODENAME sh | Inspect specific Node. In this course this was used to check file status when troubleshooting DB problems. |
+
+
+### Other
+| Command                       | About                                                                  |
+| ----------------------------- | ---------------------------------------------------------------------- |
+| python3 -m venv venv          | Create virtual environment including python and pip.                   |
+| source venv/bin/activate      | Activate virtual environment in terminal.                              |
+| pip install DEPENDENCY        | Install dependency to the virtual environment.                         |
+| pip freeze > requirements.txt | Create requirements.txt file that Dockerfile needs for image building. |
 
 
 

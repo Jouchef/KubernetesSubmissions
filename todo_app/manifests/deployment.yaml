@@ -16,12 +16,17 @@ spec:
         - name: server-volume
           persistentVolumeClaim:
             claimName: server-claim
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: db-claim
       containers:
         - name: server-container
-          image: jouchef/server:1.12
+          image: jouchef/server:1.13.5
           env:
             - name: PORT
               value: "3006"
           volumeMounts:
             - name: server-volume
               mountPath: /app/static
+            - name: db-volume
+              mountPath: /app/data/db

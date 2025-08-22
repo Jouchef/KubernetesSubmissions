@@ -9,3 +9,4 @@ COPY . .
 
 #-u is needed so the prints come up. Otherwise they dont show in real time.
 CMD ["python", "-u", "app.py"]
+
