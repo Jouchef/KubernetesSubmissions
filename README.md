@@ -20,6 +20,7 @@
 ### CHAPTER 3
 - [2.1](https://github.com/Jouchef/KubernetesSubmissions/tree/2.1/Log_output)
 - [2.2](https://github.com/Jouchef/KubernetesSubmissions/tree/2.2/todo_app)
+- [2.3](https://github.com/Jouchef/KubernetesSubmissions/tree/2.3/Log_output)
 
 ## Commands
 
@@ -33,7 +34,7 @@
 ### Kubectl
 | Command                                                           | about                                                                                                                       |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| kubectl config use-context CLUSTERNAME                            | Change context to toher cluster                                                                                             |
+| kubectl config use-context CLUSTERNAME                            | Change context to other cluster                                                                                             |
 | kubectl explain RESOURCE                                          | Get explanation to the resource                                                                                             |
 | kubectl describe RESOURCE RESOURCENAME                            | shows all specs of the resource                                                                                             |
 | kubectl get RESOURCE                                              | List all objects of that type                                                                                               |
@@ -49,6 +50,9 @@
 | kubectl rollout restart deployment DEPNAME                        | Restart a deployment when envs updated.                                                                                     |
 | kubectl exec -it DEPLOYMENTNAME -- bash                           | Run commands inside the deployment for troubleshooting                                                                      |
 | wget -qO - http://SERVICENAME:SERVICEPORT                         | From inside of an another pod you can connect to anothor pod inside the same cluster if you have ClusterIp service defined. |
+| kubectl config set-context --current --namespace=<name>           | If you want to use specific namespace contantly use this command to change default namespace.                               |
+
+
 
 
 ### Docker
@@ -57,7 +61,7 @@
 | docker exec -it NODENAME sh | Inspect specific Node. In this course this was used to check file status when troubleshooting DB problems. |
 
 
-### Other
+### Virtual Env
 | Command                       | About                                                                  |
 | ----------------------------- | ---------------------------------------------------------------------- |
 | python3 -m venv venv          | Create virtual environment including python and pip.                   |
@@ -66,6 +70,12 @@
 | pip freeze > requirements.txt | Create requirements.txt file that Dockerfile needs for image building. |
 | deactivate                    | Escape pip virtual environment.                                        |
 
+### Kubens - Manage Namespaces
+Install it with apt or other
+| Command          | About                                           |
+| ---------------- | ----------------------------------------------- |
+| kubens           | Show Namespaces in active cluster.              |
+| kubens NAMESPACE | Change the namespace to that specific namespace |
 
 
 ## Key concepts
@@ -74,13 +84,14 @@
 
 - **cluster:** group of nodes / containers (server or agent)
 - **deployment:** resource that controls pods creation, updating and scaling
-- **Resource:** pod, service (svc), node, deployment, PV, PVC, 
+- **Resource:** pod, service (svc), node, deployment, PV, PVC, namespace
 - **Nodeport:** Port that is available outside. It has to be between 30080 - 32767
 - **Service:** Ensures that application is accessible and secured. Handles routing, load balancing... 
 - **pod:** Pod can have one or multiple containers running inside of it. 
 - **Ingress:** Ingress is a resource that handles routing to the running services inside of a cluster according to the set rules.
 - **PersistentVolume (PV):** Defines space for filestorage. Can be stored in different storage mediums. Pods can claim these with *PVC's*
 - **PersistentVolumeClaim (PVC):** This allows a pod to claim storagespace from a PV.
+- **Namespace** Virtual cluster inside of a cluster. With namespace it is possible to divide cluster to smaller logical sections so other software does not interfere with another.
 
 
 ## Problems and fixes for them
