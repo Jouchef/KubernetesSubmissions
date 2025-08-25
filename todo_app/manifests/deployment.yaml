@@ -21,12 +21,18 @@ spec:
             claimName: db-claim
       containers:
         - name: server-container
-          image: jouchef/server:1.13.5
+          image: jouchef/server:2.2.7
           env:
-            - name: PORT
+            - name: FRONT-PORT
               value: "3006"
           volumeMounts:
             - name: server-volume
               mountPath: /app/static
+        - name: backend-container
+          image: jouchef/backend:2.2.4
+          env:
+            - name: BACKEND-PORT
+              value: "3007"
+          volumeMounts: 
             - name: db-volume
-              mountPath: /app/data/db
+              mountPath: /app/db

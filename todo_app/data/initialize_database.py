@@ -1,6 +1,6 @@
 import sys
-from .database_connection import get_database_connection
-from .default_data import add_default_tasks
+from database_connection import get_database_connection
+from default_data import add_default_tasks
 
 
 def drop_tables(connection):

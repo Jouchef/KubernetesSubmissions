@@ -3,8 +3,6 @@ from flask import Flask, render_template
 import os
 import requests
 import threading
-from data.task_reposetory import task_reposetory
-from data.initialize_database import initialize_database
 
 
 app = Flask(__name__)
@@ -12,7 +10,7 @@ app = Flask(__name__)
 imagePath = "static/images/kuva.jpg"
 cacheTime = 600 #Seconds
 
-url = "https://picsum.photos/300/200.jpg"
+pictureUrl = "https://picsum.photos/300/200.jpg"
 
 download_lock = threading.Lock()
 
@@ -35,7 +33,7 @@ def get_pic():
 def download_pic():
         with download_lock:
             print("Requesting a new picture!")
-            data = requests.get(url).content
+            data = requests.get(pictureUrl).content
 
             with open(imagePath, "wb") as f:
                 f.write(data)
@@ -44,12 +42,12 @@ def download_pic():
 @app.route("/")
 def homepage():
     get_pic()
-    tasks = task_reposetory.get_all_tasks()
+    tasks = requests.get("http://backend-svc:2345/todos").json()
+    print(f"tasks: {tasks}")
     return render_template("index.html", tasks=tasks)
 
 
 
 if __name__ == "__main__":
-    initialize_database()
-    port = int(os.environ.get("PORT", "5000"))
+    port = int(os.environ.get("FRONT-PORT", "5000"))
     app.run(host="0.0.0.0", port=port)
