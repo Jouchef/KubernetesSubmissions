@@ -21,6 +21,7 @@
 - [2.1](https://github.com/Jouchef/KubernetesSubmissions/tree/2.1/Log_output)
 - [2.2](https://github.com/Jouchef/KubernetesSubmissions/tree/2.2/todo_app)
 - [2.3](https://github.com/Jouchef/KubernetesSubmissions/tree/2.3/Log_output)
+- [2.4](https://github.com/Jouchef/KubernetesSubmissions/tree/2.4/todo_app)
 
 ## Commands
 
@@ -74,7 +75,7 @@
 Install it with apt or other
 | Command          | About                                           |
 | ---------------- | ----------------------------------------------- |
-| kubens           | Show Namespaces in active cluster.              |
+| kubens           | List Namespaces in active cluster.              |
 | kubens NAMESPACE | Change the namespace to that specific namespace |
 
 
@@ -101,3 +102,5 @@ Install it with apt or other
     - ```failed to do request: Head "https://registry-1.docker.io/v2/jouchef/log_creator/manifests/1.10.1": dial tcp: lookup registry-1.docker.io: Try again```
   - Fix: ```k3d cluster stop CLUSTER``` ```k3d cluster start CLUSTER```
   - This fixed the problem for me. 
+- If you want to update pvc and connect it to the old pv, but ```kubectl get pv``` shows "Released" instead of "Available" on the **status** \
+  you can use ```kubectl patch pv PVNAME -p '{"spec":{"claimRef": null}}'``` This command releases the pv from the old pvc and sets **status** to Available.
