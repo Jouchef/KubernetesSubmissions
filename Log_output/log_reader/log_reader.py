@@ -3,6 +3,17 @@ import os
 import requests
 
 app = Flask(__name__)
+
+def get_text_from_file():
+    filepath = "/app/config/text_from_file"
+    if not os.path.exists(filepath):
+        return f"file not found: {filepath}", 404
+    with open(filepath) as f:
+        text = f.read()
+        print(f"text in file was: {text}")
+
+    return text
+
 @app.route("/logs")
 def get_pings():
 
@@ -17,7 +28,12 @@ def get_pings():
     pongs = requests.get(f"http://pingpong-svc:{svc_port}/pingpong").text
     pongs = pongs[5:]
 
-    return f"{timeAndCode} <br> Ping / Pongs: {pongs}"
+    text_to_show = (f"file content: {get_text_from_file()} <br> "
+                    f"env variable: {os.environ.get("MESSAGE", "Error: Could not find the variable")} <br> "
+                    f"{timeAndCode} <br> "
+                    f"Ping / Pongs: {pongs}")
+
+    return text_to_show
 
     
 if __name__ == "__main__":

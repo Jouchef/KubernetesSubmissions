@@ -17,6 +17,12 @@ spec:
         - name: log-volume
           persistentVolumeClaim:
             claimName: ping-claim
+        - name: config-volume
+          configMap:
+            name: logger-config-map
+            items:
+              - key: text_from_file
+                path: text_from_file
       containers:
         - name: log-creator-container
           image: jouchef/log-creator:1.11.1
@@ -24,12 +30,19 @@ spec:
             - name: log-volume
               mountPath: /app/logs
         - name: log-reader-container
-          image: jouchef/log-reader:2.1.3
+          image: jouchef/log-reader:2.5.4
           env:
             - name: PORT
               value: "3004"
             - name: SVC-PORT
               value: "2345"
+            - name: MESSAGE
+              valueFrom: 
+                configMapKeyRef:
+                  name: logger-config-map
+                  key: message
           volumeMounts:
             - name: log-volume
               mountPath: /app/logs
+            - name: config-volume
+              mountPath: /app/config

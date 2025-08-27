@@ -22,6 +22,7 @@
 - [2.2](https://github.com/Jouchef/KubernetesSubmissions/tree/2.2/todo_app)
 - [2.3](https://github.com/Jouchef/KubernetesSubmissions/tree/2.3/Log_output)
 - [2.4](https://github.com/Jouchef/KubernetesSubmissions/tree/2.4/todo_app)
+- [2.5](https://github.com/Jouchef/KubernetesSubmissions/tree/2.5/Log_output)
 
 ## Commands
 
@@ -73,10 +74,10 @@
 
 ### Kubens - Manage Namespaces
 Install it with apt or other
-| Command          | About                                           |
-| ---------------- | ----------------------------------------------- |
-| kubens           | List Namespaces in active cluster.              |
-| kubens NAMESPACE | Change the namespace to that specific namespace |
+| Command          | About                                            |
+| ---------------- | ------------------------------------------------ |
+| kubens           | List Namespaces in active cluster.               |
+| kubens NAMESPACE | Change the namespace to the specified namespace. |
 
 
 ## Key concepts
@@ -93,6 +94,8 @@ Install it with apt or other
 - **PersistentVolume (PV):** Defines space for filestorage. Can be stored in different storage mediums. Pods can claim these with *PVC's*
 - **PersistentVolumeClaim (PVC):** This allows a pod to claim storagespace from a PV.
 - **Namespace** Virtual cluster inside of a cluster. With namespace it is possible to divide cluster to smaller logical sections so other software does not interfere with another.
+- **ConfigMap** Used to store configuration variables for the application. Changes in configMap reflect instantly in the running application.
+- **Secrets** Used to store sensitive information for example API keys.
 
 
 ## Problems and fixes for them
