@@ -17,9 +17,6 @@ spec:
         - name: server-volume
           persistentVolumeClaim:
             claimName: server-claim
-        - name: db-volume
-          persistentVolumeClaim:
-            claimName: db-claim
       containers:
         - name: server-container
           image: jouchef/server:2.6.1
@@ -40,10 +37,17 @@ spec:
             - name: server-volume
               mountPath: /app/static
         - name: backend-container
-          image: jouchef/backend:2.2.4
+          image: jouchef/backend:2.8.2
           env:
             - name: BACKEND-PORT
               value: "3007"
-          volumeMounts: 
-            - name: db-volume
-              mountPath: /app/db
+            - name: DB_HOST
+              value: "todo-postgres-svc"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "tododb"
+            - name: DB_USER
+              value: "todo"
+            - name: DB_PASSWORD
+              value: "secretpassword"

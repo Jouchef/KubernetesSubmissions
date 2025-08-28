@@ -25,6 +25,8 @@
 - [2.5](https://github.com/Jouchef/KubernetesSubmissions/tree/2.5/Log_output)
 - [2.6](https://github.com/Jouchef/KubernetesSubmissions/tree/2.6/todo_app)
 - [2.7](https://github.com/Jouchef/KubernetesSubmissions/tree/2.7/pingpong) 
+- [2.8](https://github.com/Jouchef/KubernetesSubmissions/tree/2.8/todo_app)
+
 
 ## Commands
 
@@ -82,6 +84,7 @@ Install it with apt or other
 | kubens NAMESPACE | Change the namespace to the specified namespace. |
 
 ### psql
+```pip install psycopg2-binary```
 | Command                              | About                                           |
 | ------------------------------------ | ----------------------------------------------- |
 | psql -U POSTGRES_USER -d POSTGRES_DB | Use postgres when you have exec'd into the pod. |
@@ -121,3 +124,4 @@ Install it with apt or other
   - This fixed the problem for me. 
 - If you want to update pvc and connect it to the old pv, but ```kubectl get pv``` shows "Released" instead of "Available" on the **status** \
   you can use ```kubectl patch pv PVNAME -p '{"spec":{"claimRef": null}}'``` This command releases the pv from the old pvc and sets **status** to Available.
+- If your computer does not have pg_config you need to install psycopg2-binary instead of psycopg2

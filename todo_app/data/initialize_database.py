@@ -5,39 +5,59 @@ from default_data import add_default_tasks
 
 def drop_tables(connection):
     cursor = connection.cursor()
-    cursor.execute('DROP TABLE IF EXISTS tasks;')
-    connection.commit()
-    print("Tables dropped")
+    try:
+        cursor.execute('DROP TABLE IF EXISTS tasks;')
+        connection.commit()
+        print("Tables dropped")
+    except Exception as e:
+        connection.rollback()
+        raise Exception(f"Virhe taulujen poistossa: {e}") from e
+    finally:
+        cursor.close()
+
 
 
 def create_tables(connection):
     cursor = connection.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            task TEXT NOT NULL,
-            done BOOLEAN DEFAULT 0
-        );
-    ''')
-    connection.commit()
-    print("Tables created")
+    try:
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS tasks (
+                id SERIAL PRIMARY KEY,
+                task TEXT NOT NULL,
+                done BOOLEAN DEFAULT FALSE
+            );
+        ''')
+        connection.commit()
+        print("Tables created")
+    except Exception as e:
+        connection.rollback()
+        raise Exception(f"Virhe taulujen luomisessa: {e}") from e
+    finally:
+        cursor.close()
+
 
 
 def table_exists(connection, table_name):
     cursor = connection.cursor()
-    cursor.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name=?;",
-        (table_name,)
-    )
-    result = cursor.fetchone()
-    print("result:", result)
-    cursor.close()
-    return result is not None
+    try:
+        cursor.execute(
+            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name=%s);",
+            (table_name.lower(),)
+        )
+        exists = cursor.fetchone()[0]
+        print("Table exists:", exists)
+        return exists
+    except Exception as e:
+        raise Exception(f"Virhe taulun olemassaolon tarkistuksessa: {e}") from e
+    finally:
+        cursor.close()
+
+
 
 
 def initialize_database(reset: bool = False):
     """
-    Alustaa SQLite-tietokannan tarvittavat taulut ja oletustiedot.
+    Alustaa tietokannan tarvittavat taulut ja oletustiedot.
 
     Args:
         reset (bool): Jos True, poistaa olemassa olevat taulut ja luo ne uudelleen

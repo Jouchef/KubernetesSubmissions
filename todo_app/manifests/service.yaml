@@ -16,6 +16,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-svc
+  namespace: project
 spec:
   type: ClusterIP
   selector:
@@ -24,3 +25,20 @@ spec:
     - port: 2345
       protocol: TCP
       targetPort: 3007
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todo-postgres-svc
+  namespace: project
+  labels:
+    app: todo-postgres
+spec:
+  ports:
+  - port: 5432
+    name: todo-db
+  clusterIP: None
+  selector:
+    app: todo-postgres
+
+

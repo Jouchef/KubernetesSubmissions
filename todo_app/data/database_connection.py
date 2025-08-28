@@ -1,15 +1,18 @@
+import psycopg2
 import os
-import sqlite3
 
-dirname = os.path.dirname(__file__)
 
-db_path = os.path.join(dirname, "db", "database.sqlite")
-
-os.makedirs(os.path.dirname(db_path), exist_ok=True)
-
-connection = sqlite3.connect(db_path, check_same_thread=False)
-connection.row_factory = sqlite3.Row
-
+DB_HOST = os.environ.get("DB_HOST", "todo-postgres-svc")
+DB_PORT = os.environ.get("DB_PORT", "5432")
+DB_NAME = os.environ.get("DB_NAME", "tododb")
+DB_USER = os.environ.get("DB_USER", "todo")
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "secretpassword")
 
 def get_database_connection():
-    return connection
+    return psycopg2.connect(
+        host=DB_HOST,
+        port=DB_PORT,
+        dbname=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD
+    )
