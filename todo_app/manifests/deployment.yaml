@@ -22,10 +22,20 @@ spec:
             claimName: db-claim
       containers:
         - name: server-container
-          image: jouchef/server:2.2.7
+          image: jouchef/server:2.6.1
           env:
             - name: FRONT-PORT
               value: "3006"
+            - name: BACKENDSVCURL
+              value: "backend-svc"
+            - name: SVCPORT
+              value: "2345"
+            - name: IMGCACHETIME
+              value: "600"  #seconds
+            - name: IMAGEPATH
+              value: "images/kuva.jpg"   # This directory will be inside of /static
+            - name: PICURL
+              value: "https://picsum.photos/300/200.jpg"
           volumeMounts:
             - name: server-volume
               mountPath: /app/static

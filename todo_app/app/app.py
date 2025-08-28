@@ -7,10 +7,12 @@ import threading
 
 app = Flask(__name__)
 
-imagePath = "static/images/kuva.jpg"
-cacheTime = 600 #Seconds
+relImagePath = os.environ.get("IMAGEPATH")
+imagePath = os.path.join("static", relImagePath)
+print(imagePath, "imagepath")
+cacheTime = int(os.environ.get("IMGCACHETIME")) #Seconds
 
-pictureUrl = "https://picsum.photos/300/200.jpg"
+pictureUrl = os.environ.get("PICURL")
 
 download_lock = threading.Lock()
 
@@ -42,12 +44,14 @@ def download_pic():
 @app.route("/")
 def homepage():
     get_pic()
-    tasks = requests.get("http://backend-svc:2345/todos").json()
+    backend_svc = os.environ.get("BACKENDSVCURL")
+    svc_port = os.environ.get("SVCPORT")
+    tasks = requests.get(f"http://{backend_svc}:{svc_port}/todos").json()
     print(f"tasks: {tasks}")
-    return render_template("index.html", tasks=tasks)
+    return render_template("index.html", tasks=tasks, imgPath=relImagePath)
 
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("FRONT-PORT", "5000"))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, )
