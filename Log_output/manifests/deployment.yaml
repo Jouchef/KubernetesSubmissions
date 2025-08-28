@@ -16,7 +16,7 @@ spec:
       volumes:
         - name: log-volume
           persistentVolumeClaim:
-            claimName: ping-claim
+            claimName: log-claim
         - name: config-volume
           configMap:
             name: logger-config-map

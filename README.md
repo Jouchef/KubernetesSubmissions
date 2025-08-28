@@ -24,6 +24,7 @@
 - [2.4](https://github.com/Jouchef/KubernetesSubmissions/tree/2.4/todo_app)
 - [2.5](https://github.com/Jouchef/KubernetesSubmissions/tree/2.5/Log_output)
 - [2.6](https://github.com/Jouchef/KubernetesSubmissions/tree/2.6/todo_app)
+- [2.7](https://github.com/Jouchef/KubernetesSubmissions/tree/2.7/pingpong) 
 
 ## Commands
 
@@ -80,6 +81,14 @@ Install it with apt or other
 | kubens           | List Namespaces in active cluster.               |
 | kubens NAMESPACE | Change the namespace to the specified namespace. |
 
+### psql
+| Command                              | About                                           |
+| ------------------------------------ | ----------------------------------------------- |
+| psql -U POSTGRES_USER -d POSTGRES_DB | Use postgres when you have exec'd into the pod. |
+| \l                                   | List databases                                  |
+| \c DATABASENAME                      | Connect to specific database.                   |
+| \dt                                  | list tables                                     |
+| \d TABLENAME                         | Show table info                                 |
 
 ## Key concepts
 
@@ -94,9 +103,13 @@ Install it with apt or other
 - **Ingress:** Ingress is a resource that handles routing to the running services inside of a cluster according to the set rules.
 - **PersistentVolume (PV):** Defines space for filestorage. Can be stored in different storage mediums. Pods can claim these with *PVC's*
 - **PersistentVolumeClaim (PVC):** This allows a pod to claim storagespace from a PV.
+
+
+### Part III
 - **Namespace** Virtual cluster inside of a cluster. With namespace it is possible to divide cluster to smaller logical sections so other software does not interfere with another.
 - **ConfigMap** Used to store configuration variables for the application. Changes in configMap reflect instantly in the running application.
 - **Secrets** Used to store sensitive information for example API keys.
+- **StatefulSet** Like a deployment, but when restarting or crashing they keep their state. 
 
 
 ## Problems and fixes for them
