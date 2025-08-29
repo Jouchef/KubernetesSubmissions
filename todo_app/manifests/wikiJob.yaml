@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: wiki-script
+  namespace: project
+spec:
+  schedule: "1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: wiki-script
+            image: jouchef/wikiscript:2.9.6
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never 
