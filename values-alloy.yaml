@@ -12,35 +12,45 @@ alloy:
         }
       }
 
-      discovery.kubernetes "pods" {
+      discovery.kubernetes "pod" {
         role = "pod"
       }
 
-      loki.source.kubernetes "container_logs" {
-        targets    = discovery.kubernetes.pods.targets
-        forward_to = [loki.write.default.receiver]
-      }
-
-      discovery.relabel "pods_metadata" {
-        targets = discovery.kubernetes.pods.targets
+      discovery.relabel "pod_logs" {
+        targets = discovery.kubernetes.pod.targets
 
         rule {
           source_labels = ["__meta_kubernetes_namespace"]
+          action = "replace"
           target_label  = "namespace"
         }
 
         rule {
           source_labels = ["__meta_kubernetes_pod_name"]
+          action = "replace"
           target_label  = "pod"
         }
 
         rule {
           source_labels = ["__meta_kubernetes_pod_container_name"]
+          action = "replace"
           target_label  = "container"
         }
 
         rule {
           source_labels = ["__meta_kubernetes_pod_node_name"]
+          action = "replace"
           target_label  = "node"
         }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+          action = "replace"
+          target_label = "app"
+        }
+      }
+
+      loki.source.kubernetes "pod_logs" {
+        targets    = discovery.relabel.pod_logs.output
+        forward_to = [loki.write.default.receiver]
       }
