@@ -27,6 +27,7 @@
 - [2.7](https://github.com/Jouchef/KubernetesSubmissions/tree/2.7/pingpong) 
 - [2.8](https://github.com/Jouchef/KubernetesSubmissions/tree/2.8/todo_app)
 - [2.9](https://github.com/Jouchef/KubernetesSubmissions/tree/2.9/todo_app)
+- [2.10](https://github.com/Jouchef/KubernetesSubmissions/tree/2.10/todo_app)
 
 
 ## Commands
@@ -58,6 +59,7 @@
 | kubectl exec -it DEPLOYMENTNAME -- bash                           | Run commands inside the deployment for troubleshooting                                                                      |
 | wget -qO - http://SERVICENAME:SERVICEPORT                         | From inside of an another pod you can connect to anothor pod inside the same cluster if you have ClusterIp service defined. |
 | kubectl config set-context --current --namespace=<name>           | If you want to use specific namespace contantly use this command to change default namespace.                               |
+| kubectl create namespace                                          | create new namespace                                                                                                        |
 
 
 
@@ -94,6 +96,12 @@ Install it with apt or other
 | \dt                                  | list tables                                     |
 | \d TABLENAME                         | Show table info                                 |
 
+### Helm - the package amanger for kubernetes
+| Command                            | About                            |
+| ---------------------------------- | -------------------------------- |
+| helm repo add REPONAME REPOADDRESS | Add repository to download from. |
+| helm repo update                   | Update Helms repo info.          |
+
 ## Key concepts
 
 ### Part II
@@ -116,7 +124,10 @@ Install it with apt or other
 - **StatefulSet** Like a deployment, but when restarting or crashing they keep their state. 
 
 
-## Problems and fixes for them
+
+
+
+## Problems and and how I fixed them
 - Suddenly could not pull image from Dockerhub when deploying the application. Did work earlier. Pulling with Docker commands worked. 
   - Errors: 
     - ```ImagePullBackOff```, 
@@ -126,3 +137,95 @@ Install it with apt or other
 - If you want to update pvc and connect it to the old pv, but ```kubectl get pv``` shows "Released" instead of "Available" on the **status** \
   you can use ```kubectl patch pv PVNAME -p '{"spec":{"claimRef": null}}'``` This command releases the pv from the old pvc and sets **status** to Available.
 - If your computer does not have pg_config you need to install psycopg2-binary instead of psycopg2
+- After Helm install command
+  - ```Error: UPGRADE FAILED: cannot patch "minio" with kind PersistentVolumeClaim: PersistentVolumeClaim "minio" is invalid: spec: Forbidden: spec is immutable after creation except resources.requests and volumeAttributesClassName for bound claims```
+    - Use ```kubectl get pvc``` and delete the old pvc
+- If you kill the helm install when it is still installing you may get:
+  - ```Error: UPGRADE FAILED: another operation (install/upgrade/rollback) is in progress```
+    - Use ```helm uninstall CHARTNAME```
+      - Chartname is the same one that you have ```ctrl + c``` to.
+- Getting a lot of `grafana failed to create fsnotify watcher: too many open files` errors in grafana?
+  - You may alter your computer s configuration to up the limit:
+    - `sudo nano /etc/sysctl.d/99-inotify.conf`
+    - Add the following rows:
+
+```bash
+fs.inotify.max_user_instances = 8192
+fs.inotify.max_user_watches = 524288
+```
+
+     -  Next apply the changes: ```sudo sysctl --system```
+
+ 
+## Monitoring setup
+
+_I decided to install monitoring setup in the modern way and not to learn old tools._
+
+### Overview
+It consists of:
+- Minio
+  - Acts as object storage for Loki.
+  - inside of Minio needs to be configured the following buckets:
+    - admin, chunks, ruler
+    - Loki uses these by default to store data.
+- Loki
+  - Is responsible for gathering, indexing and saving logs _(in this case)_ to the Minio storage.
+  - Loki gets the logs from the Grafana Alloy.
+  - Logs are saved to the Minio storage as configured in values-minio.yaml.
+    - After succesfull installation of Minio you get the url in the info.
+    - Below the line _MinIO can be accessed via port 9000 on the following DNS name from within your cluster:_
+      - For me it was: ```SERVICENAME.NAMESPACE.cluster.local```
+- Grafana Alloy
+  - Alloy's role is to gather the logs from the clusters pods and send them to the Loki.
+    - After succesfull instlalation of Loki you can get the url to send data from Alloy after the line:
+      - _You can send logs from inside the cluster using the cluster DNS:_
+        - For me it was: ```http://loki-gateway.NAMESPACE.svc.cluster.local/loki/api/v1/push```
+- Grafana
+  - Ui to acces the data. Create Dashboards and alerts.
+  - Is connected to Loki from which it gets it's data. 
+  - Read the info after installation to get your password to the admin panel.
+  - Username should be: **admin** and it also reads in the info after install. 
+  - Use ```kubectl port-forward GRAFANAPODNAME 3000```
+  - And then go the the grafana page in [localhost:3000](localhost:3000)
+
+### Installation
+
+My cluster has been setup using Helsinki university Mooc "Devops with kubernetes course" (30.08.2025)
+
+#### Requirements
+- Kubernetes cluster k3s
+- Helm 3.x
+- Kubectl
+
+
+1. Create namespaces: `kubectl create namespace NAME`
+   1. minio
+   2. loki
+   3. alloy
+   4. grafana
+2. Add repositories to the Helm
+   
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add minio https://charts.min.io/
+helm repo update
+```
+
+3. Navigate to the folder that contains the `values-NAME.yaml` files.
+4. Install Minio
+   1. ```helm upgrade --install minio minio/minio -n minio -f values-minio.yaml```
+      1. use `kubectl port-forward MINIOPODNAME 9001` to use the webui 
+      2. dummy username and password are defined in the _values-minio.yaml_-file. 
+         1. Change those for your needs and use encryption if possible. 
+         2. [instructions for encryption](https://courses.mooc.fi/org/uh-cs/courses/devops-with-kubernetes/chapter-3/configuring-applications)
+      3. and create the following buckets
+         1. admin, chunks, ruler
+5. Install Loki
+   1. ```helm upgrade --install loki grafana/loki -n loki -f values-loki.yaml ```
+6. Install Alloy
+   1. ```helm upgrade --install alloy grafana/alloy -n alloy -f values-alloy.yaml ```
+7. Install grafana
+   1. ```helm upgrade --install grafana grafana/grafana -n grafana -f values-grafana.yaml ```
+      1. Use the `kubectl port-forward GRAFANAPODNAME 3000` to access the web ui. 
+      2. Check the Overview - Grafana section on how to get the username and password for login.
+

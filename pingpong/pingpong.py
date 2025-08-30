@@ -26,6 +26,7 @@ def pingpong():
     global counter
     getCounter()
     response = f"pong {counter}"
+    print(f"pinpong {counter}")
     updateCounter()
     return response
 

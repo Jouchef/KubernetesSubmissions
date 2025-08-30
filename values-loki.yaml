@@ -1,0 +1,41 @@
+loki:
+  auth_enabled: false
+
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: s3
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
+    s3:
+      endpoint: http://minio.minio.svc.cluster.local:9000
+      insecure: true
+      accessKeyId: loki
+      secretAccessKey: loki1234
+      s3ForcePathStyle: true
+
+  schemaConfig:
+    configs:
+      - from: 2024-01-01
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+
+backend:
+  replicas: 1
+read:
+  replicas: 1
+write:
+  replicas: 1
+canary:
+  replicas: 1
+chunksCache:
+  enabled: false
+resultsCache:
+  enabled: false
