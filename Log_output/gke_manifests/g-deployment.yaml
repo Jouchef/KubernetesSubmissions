@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logger-dep
+  namespace: exercises
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logger
+  template:
+    metadata:
+      labels:
+        app: logger
+    spec:
+      volumes:
+        - name: log-volume
+          persistentVolumeClaim:
+            claimName: log-claim
+        - name: config-volume
+          configMap:
+            name: logger-config-map
+            items:
+              - key: text_from_file
+                path: text_from_file
+      containers:
+        - name: log-creator-container
+          image: jouchef/log-creator:1.11.1
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
+              subPath: logs
+        - name: log-reader-container
+          image: jouchef/log-reader:3.2.0
+          env:
+            - name: PORT
+              value: "3004"
+            - name: SVC-PORT
+              value: "80"
+            - name: MESSAGE
+              valueFrom: 
+                configMapKeyRef:
+                  name: logger-config-map
+                  key: message
+          volumeMounts:
+            - name: log-volume
+              mountPath: /app/logs
+              subPath: logs
+            - name: config-volume
+              mountPath: /app/config

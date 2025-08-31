@@ -35,6 +35,10 @@ def get_pings():
 
     return text_to_show
 
+@app.route('/')
+def root():
+    return "OK", 200
+
     
 if __name__ == "__main__":
     svc_port = int(os.environ.get("SVC-PORT", "2345"))

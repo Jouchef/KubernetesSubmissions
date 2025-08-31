@@ -30,6 +30,10 @@ def pingpong():
     updateCounter()
     return response
 
+@app.route('/')
+def root():
+    return "OK", 200
+
 if __name__ == "__main__":
     initialize_database()
     getCounter()
