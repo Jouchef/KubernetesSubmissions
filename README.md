@@ -110,8 +110,8 @@ Install it with apt or other
 | Command                            | About                            |
 | ---------------------------------- | -------------------------------- |
 | `gcloud auth login`                | Login to your account.           |
-| `gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.33 --disk-size=32 --num-nodes=3 --machine-type=e2-micro` | Create model cluster as in coursematerial. |
-| `gcloud componenets list`          | List all components and their status |
+| `gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.33 --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard` | Create model cluster as in coursematerial. This also includes the gateway-api.|
+| `gcloud components list`          | List all components and their status |
 | `gcloud container clusters get-credentials dwk-cluster --zone=europe-north1-b` | Credentials if auth plugin was not installed |
 | `gcloud container clusters delete dwk-cluster --zone=europe-north1-b` | Delete your cluster when not in use. |
 
