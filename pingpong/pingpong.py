@@ -21,18 +21,15 @@ def updateCounter():
     counter_reposetory.update_counter(counter)
 
 
-@app.route('/pingpong')
+@app.route('/')
 def pingpong():
     global counter
     getCounter()
     response = f"pong {counter}"
     print(f"pinpong {counter}")
     updateCounter()
-    return response
+    return response, 200
 
-@app.route('/')
-def root():
-    return "OK", 200
 
 if __name__ == "__main__":
     initialize_database()

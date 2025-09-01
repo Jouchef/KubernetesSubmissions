@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: pingpong-container
-          image: jouchef/pingpong:3.2.0
+          image: jouchef/pingpong:3.4.0
           env:
             - name: PORT
               value: "3002"
