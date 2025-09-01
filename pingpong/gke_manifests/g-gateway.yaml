@@ -27,16 +27,11 @@ spec:
         type: PathPrefix
         value: /pingpong
     filters:
-      - type: RequestRedirect
-        requestRedirect:
-          path:
-            type: ReplacePrefixMatch
-            replacePrefixMatch: /
-          statusCode: 302
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
+    - type: URLRewrite
+      urlRewrite:
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /
     backendRefs:
     - name: pingpong-svc
       port: 80
