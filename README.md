@@ -108,15 +108,37 @@ Install it with apt or other
 | helm repo add REPONAME REPOADDRESS | Add repository to download from. |
 | helm repo update                   | Update Helms repo info.          |
 
-### KDE
-| Command                            | About                            |
-| ---------------------------------- | -------------------------------- |
-| `gcloud auth login`                | Login to your account.           |
-| `gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.33 --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard` | Create model cluster as in coursematerial. This also includes the gateway-api.|
-| `gcloud components list`          | List all components and their status |
-| `gcloud container clusters get-credentials dwk-cluster --zone=europe-north1-b` | Credentials if auth plugin was not installed |
-| `gcloud container clusters delete dwk-cluster --zone=europe-north1-b` | Delete your cluster when not in use. |
+### Google cloud - GKE (Google Kubernetes Engine)
+[Google's own cheat sheet](https://docs.cloud.google.com/sdk/docs/cheatsheet)
+[Here is the latest gcloud CLI version](https://docs.cloud.google.com/sdk/gcloud)
+- If you do not use the latest one there might be errors.
+- I have installed the .tar package so I have to use the integrated tool to update the CLI
+[Here is the suppot schedule for GKE versions](https://docs.cloud.google.com/kubernetes-engine/docs/release-schedule)
+| Command                                                                                                | About                                                                      |
+| ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| `gcloud init`                                                                                          | Initialize gcloud CLI                                                      |
+| `gcloud -v`                                                                                            | Show current CLI version                                                   |
+| `gcloud components update`                                                                             | Update the CLI (if you installed the .tar version) Dont use the `sudo` cmd |
+| `gcloud auth login`                                                                                    | Login to your account.                                                     |
+| `gcloud components list`                                                                               | List all components and their status                                       |
+| `gcloud projects list`                                                                                 | Get active projects from the authenticated user                            |
+| `gcloud config set project PROJECT_ID`                                                                 | Set the project ID                                                         |
+| `gcloud container clusters get-credentials dwk-cluster --zone=europe-north1-b`                         | Credentials if auth plugin was not installed                               |
+| `gcloud container clusters delete dwk-cluster --zone=europe-north1-b`                                  | Delete your cluster when not in use.                                       |
+| `gcloud container clusters update dwk-cluster --zone=europe-north1-b --monitoring=NONE --logging=NONE` | Save RAM by deleting monitoring and logging                                |
 
+`gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard`
+- Create model cluster as in coursematerial. This also includes the gateway-api.
+- `release-channel` has been set to `regular` instead of defining static version for the cluster.
+- This will point the kubeconfig to the created cluster
+
+### Kustomize
+Kubectl integrated tool that enables yaml-file customization. It kind of sits on top of other yaml-files over writing their settings.
+[Kustomize cheat sheet](https://itnext.io/kubernetes-kustomize-cheat-sheet-8e2d31b74d8f)
+| Command               | About                                             |
+| --------------------- | ------------------------------------------------- |
+| `kubectl apply -k .`  | Apply changes to cluster with customization       |
+| `kubectl kustomize .` | See modified yaml files without implementing them |
 
 ## Key concepts
 
