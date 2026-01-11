@@ -14,9 +14,10 @@ This assumes that you have installed [Google Cloud SDK](https://cloud.google.com
 And installed auth plugin `gcloud components install gke-gcloud-auth-plugin`
 
 1. Create cluster `gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard  --monitoring=NONE --logging=NONE`
-2. Apply the configuration in pingpong folder `kubectl apply -f gke_manifests/`
-3. Change namespace to "Exercises" `kubens exercises`
-4. `kubectl get gateway --watch` And open my-gateway Address/pingpong when it is not as pending.
+2. Apply the configuration in admin folder `kubectl apply -f gke_manifests/` (creates namespace and gateway)
+3. Apply the configuration in pingpong folder `kubectl apply -f gke_manifests/`
+4. Change namespace to "Exercises" `kubens exercises`
+5. `kubectl get gateway --watch` And open my-gateway Address/pingpong when it is not as pending.
 
 This app uses postgres to store ping count. It it deployed in statefulset.yaml.
 
