@@ -13,7 +13,7 @@ This deployment works in conjuction with Log_output deployment. Log_output gets 
 This assumes that you have installed [Google Cloud SDK](https://cloud.google.com/sdk/install)
 And installed auth plugin `gcloud components install gke-gcloud-auth-plugin`
 
-1. Create cluster `gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --monitoring=NONE --logging=NONE`
+1. Create cluster `gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard  --monitoring=NONE --logging=NONE`
 2. Apply the configuration in pingpong folder `kubectl apply -f gke_manifests/`
 3. Change namespace to "Exercises" `kubens exercises`
 4. `kubectl get gateway --watch` And open my-gateway Address/pingpong when it is not as pending.

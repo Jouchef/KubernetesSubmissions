@@ -51,7 +51,7 @@
 | kubectl config use-context CLUSTERNAME                            | Change context to other cluster                                                                                             |
 | kubectl explain RESOURCE                                          | Get explanation to the resource                                                                                             |
 | kubectl describe RESOURCE RESOURCENAME                            | shows all specs of the resource                                                                                             |
-| kubectl get RESOURCE                                              | List all objects of that type                                                                                               |
+| kubectl get RESOURCE                                              | List all objects of that type. Use `--watch` flag if you want it to update                                                  |
 | kubectl logs -f PODNAME                                           | see the output of the pod                                                                                                   |
 | kubectl delete deployment DEPNAME                                 | Delete the deployment                                                                                                       |
 | kubectl apply -f FILEPATH-TO-YAML                                 | create or modify deployment / service according to the YAML                                                                 |
@@ -66,6 +66,8 @@
 | wget -qO - http://SERVICENAME:SERVICEPORT                         | From inside of an another pod you can connect to anothor pod inside the same cluster if you have ClusterIp service defined. |
 | kubectl config set-context --current --namespace=<name>           | If you want to use specific namespace contantly use this command to change default namespace.                               |
 | kubectl create namespace                                          | create new namespace                                                                                                        |
+| `kubectl config get-contexts`                                     | List all possible contexts (GKE, local,...)                                                                                 |
+| `kubectl config use-context NAME`                                 | Change the contexts to NAME                                                                                                 |
 
 
 
@@ -127,10 +129,11 @@ Install it with apt or other
 | `gcloud container clusters delete dwk-cluster --zone=europe-north1-b`                                  | Delete your cluster when not in use.                                       |
 | `gcloud container clusters update dwk-cluster --zone=europe-north1-b --monitoring=NONE --logging=NONE` | Save RAM by deleting monitoring and logging                                |
 
-`gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard`
+`gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard --monitoring=NONE --logging=NONE`
 - Create model cluster as in coursematerial. This also includes the gateway-api.
 - `release-channel` has been set to `regular` instead of defining static version for the cluster.
 - This will point the kubeconfig to the created cluster
+- Monitoring and logging flags disable google cloud's own services. This saves RAM on the cluster as there will not be own pods for those services. 
 
 ### Kustomize
 Kubectl integrated tool that enables yaml-file customization. It kind of sits on top of other yaml-files over writing their settings.
@@ -159,10 +162,11 @@ Kubectl integrated tool that enables yaml-file customization. It kind of sits on
 - **Namespace** Virtual cluster inside of a cluster. With namespace it is possible to divide cluster to smaller logical sections so other software does not interfere with another.
 - **ConfigMap** Used to store configuration variables for the application. Changes in configMap reflect instantly in the running application.
 - **Secrets** Used to store sensitive information for example API keys.
-- **StatefulSet** Like a deployment, but when restarting or crashing they keep their state. 
+- **StatefulSet** Like a deployment, but when restarting or crashing they keep their state. Good for DB's 
 
 
-
+### Part IV
+- **Gateway** Is based on Ingress, but offers more advanced features. 
 
 
 ## Problems and and how I fixed them
