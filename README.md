@@ -46,28 +46,29 @@
 | k3d cluster create / delete / list /  edit | Modify cluster in some manner      |
 
 ### Kubectl
-| Command                                                           | about                                                                                                                       |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| kubectl config use-context CLUSTERNAME                            | Change context to other cluster                                                                                             |
-| kubectl explain RESOURCE                                          | Get explanation to the resource                                                                                             |
-| kubectl describe RESOURCE RESOURCENAME                            | shows all specs of the resource                                                                                             |
-| kubectl get RESOURCE                                              | List all objects of that type. Use `--watch` flag if you want it to update                                                  |
-| kubectl logs -f PODNAME                                           | see the output of the pod                                                                                                   |
-| kubectl delete deployment DEPNAME                                 | Delete the deployment                                                                                                       |
-| kubectl apply -f FILEPATH-TO-YAML                                 | create or modify deployment / service according to the YAML                                                                 |
-| kubectl config view --minify --raw                                | get kubeconfig for example to use with lens                                                                                 |
-| kubectl port-forward PODNAME LOCALPORT:APPPORT                    | Create temporary access to software for example debugging purposes                                                          |
-| kubectl create secret generic SECRETNAME --from-env-file=.env     | Use your .env file to bring secret to the cluster                                                                           |
-| kubectl create secret generic SECRETNAME --from-literal=KEY=VALUE | Save variable to the cluster. After this add details to the deployment configuration yaml.                                  |
-| kubectl get deployment DEPNAME -o yaml                            | Get the deployments info in yaml format.                                                                                    |
-| kubectl exec -it PODNAME -- printenv                              | See all variables used in pod. Can be used with grep command                                                                |
-| kubectl rollout restart deployment DEPNAME                        | Restart a deployment when envs updated.                                                                                     |
-| kubectl exec -it DEPLOYMENTNAME -- bash                           | Run commands inside the deployment for troubleshooting                                                                      |
-| wget -qO - http://SERVICENAME:SERVICEPORT                         | From inside of an another pod you can connect to anothor pod inside the same cluster if you have ClusterIp service defined. |
-| kubectl config set-context --current --namespace=<name>           | If you want to use specific namespace contantly use this command to change default namespace.                               |
-| kubectl create namespace                                          | create new namespace                                                                                                        |
-| `kubectl config get-contexts`                                     | List all possible contexts (GKE, local,...)                                                                                 |
-| `kubectl config use-context NAME`                                 | Change the contexts to NAME                                                                                                 |
+| Command                                                           | about                                                                                                                                    |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| kubectl config use-context CLUSTERNAME                            | Change context to other cluster                                                                                                          |
+| kubectl explain RESOURCE                                          | Get explanation to the resource                                                                                                          |
+| kubectl describe RESOURCE RESOURCENAME                            | shows all specs of the resource                                                                                                          |
+| kubectl get RESOURCE                                              | List all objects of that type. Use `--watch` flag if you want it to update                                                               |
+| kubectl logs -f PODNAME                                           | see the output of the pod                                                                                                                |
+| `kubectl logs DEPLOYMENT-NAME -c CONTAINER-NAME`                  | Use this to see container logs when deployment has multiple of them. Use `--previous` flag to see the logs of the last crashed container |
+| kubectl delete deployment DEPNAME                                 | Delete the deployment                                                                                                                    |
+| kubectl apply -f FILEPATH-TO-YAML                                 | create or modify deployment / service according to the YAML                                                                              |
+| kubectl config view --minify --raw                                | get kubeconfig for example to use with lens                                                                                              |
+| kubectl port-forward PODNAME LOCALPORT:APPPORT                    | Create temporary access to software for example debugging purposes                                                                       |
+| kubectl create secret generic SECRETNAME --from-env-file=.env     | Use your .env file to bring secret to the cluster                                                                                        |
+| kubectl create secret generic SECRETNAME --from-literal=KEY=VALUE | Save variable to the cluster. After this add details to the deployment configuration yaml.                                               |
+| kubectl get deployment DEPNAME -o yaml                            | Get the deployments info in yaml format.                                                                                                 |
+| kubectl exec -it PODNAME -- printenv                              | See all variables used in pod. Can be used with grep command                                                                             |
+| kubectl rollout restart deployment DEPNAME                        | Restart a deployment when envs updated.                                                                                                  |
+| kubectl exec -it DEPLOYMENTNAME -- bash                           | Run commands inside the deployment for troubleshooting                                                                                   |
+| wget -qO - http://SERVICENAME:SERVICEPORT                         | From inside of an another pod you can connect to anothor pod inside the same cluster if you have ClusterIp service defined.              |
+| kubectl config set-context --current --namespace=<name>           | If you want to use specific namespace contantly use this command to change default namespace.                                            |
+| kubectl create namespace                                          | create new namespace                                                                                                                     |
+| `kubectl config get-contexts`                                     | List all possible contexts (GKE, local,...)                                                                                              |
+| `kubectl config use-context NAME`                                 | Change the contexts to NAME                                                                                                              |
 
 
 
@@ -197,6 +198,21 @@ fs.inotify.max_user_watches = 524288
 ```
 
      -  Next apply the changes: ```sudo sysctl --system```
+-  When applying statefulset: 
+   -  `The StatefulSet "todo-postgres-stset" is invalid: spec: Forbidden: updates to statefulset spec for fields other than 'replicas', 'ordinals', 'template', 'updateStrategy',     'persistentVolumeClaimRetentionPolicy' and 'minReadySeconds' are forbidden`
+   -  You need to delete the old one without deleting data:
+      -  `kubectl delete statefulset STATEFULSET -n NAMESPACE --cascade=orphan`
+      -  Cascade flag leaves the data and pods to wait for the creation of the new statefulset
+-  CTRL + C accidentally when GKE cluster was creating
+   -  Check cluster status with
+      -  `gcloud container clusters list`
+      -  If status is PROVISIONING, just wait
+      -  When ready get the credentials manually
+         -  `gcloud container clusters get-credentials dwk-cluster --zone europe-north1-b`
+-  When monitoring the website `kubectl logs -l app=server -c backend-container -f`
+   -  These `35.191.233.50 - - [11/Jan/2026 15:46:23] "GET / HTTP/1.1" 404 -` are Google healthchecks
+      -  By default they are done to the address /. In my case they should be done to /todos
+   -  I created healthcheck.yaml to tell Google healthcheck the right address. 
 
  
 ## Monitoring setup

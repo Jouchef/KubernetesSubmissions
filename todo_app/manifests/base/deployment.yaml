@@ -5,6 +5,8 @@ metadata:
   namespace: project
 spec:
   replicas: 1
+  strategy:
+    type: Recreate    # Because pvc is RWO, the old pod needs to be deleted before new one can attach to the pv
   selector:
     matchLabels:
       app: server
@@ -37,7 +39,10 @@ spec:
             - name: server-volume
               mountPath: /app/static
         - name: backend-container
-          image: jouchef/backend:2.10.0
+          image: jouchef/backend:2.10.3
+          ports:
+            - name: backend-port
+              containerPort: 3007   #This need to be same as env BACKEND-PORT
           env:
             - name: BACKEND-PORT
               value: "3007"
@@ -51,3 +56,15 @@ spec:
               value: "todo"
             - name: DB_PASSWORD
               value: "secretpassword"
+          readinessProbe:
+            httpGet:
+              path: /todos    
+              port: backend-port    
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /todos
+              port: backend-port
+            initialDelaySeconds: 15
+            periodSeconds: 20

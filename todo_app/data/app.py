@@ -3,6 +3,7 @@ from task_reposetory import task_reposetory
 from initialize_database import initialize_database
 import os
 
+base_url = os.environ.get("BASE_URL", "")
 
 app = Flask(__name__)
 
@@ -24,7 +25,7 @@ def tasks():
                 f"Data length is: {len(data)}"
                 )
             task_reposetory.create_task(data)
-            return redirect("/")
+            return redirect(f"{base_url}/")
 
 
 if __name__ == "__main__":

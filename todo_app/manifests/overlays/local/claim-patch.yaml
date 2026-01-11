@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: server-claim
+  namespace: project
+spec:
+  storageClassName: server-pv  # Tätä ei GKE. Käytetään vaan lokaalisti

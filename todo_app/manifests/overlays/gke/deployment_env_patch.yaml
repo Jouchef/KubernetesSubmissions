@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-dep
+  namespace: project
+spec:
+  template:
+    spec:
+      containers:
+        - name: backend-container
+          env:
+            - name: BASE_URL     # Locally there is no base url and todo application is available at /. In GKE we have applied base url and the site is available in /todo
+              value: "/todo"

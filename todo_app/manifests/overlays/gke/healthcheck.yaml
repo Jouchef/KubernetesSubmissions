@@ -1,0 +1,17 @@
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: backend-health-check
+  namespace: project
+spec:
+  default:
+    config:
+      type: HTTP
+      httpHealthCheck:
+        requestPath: /todos
+        portSpecification: USE_SERVING_PORT
+  targetRef:
+    group: ""
+    kind: Service
+    name: backend-svc
+    

@@ -81,5 +81,5 @@ def initialize_database(reset: bool = False):
 
 
 if __name__ == "__main__":
-    reset_flag = len(sys.argv) > 1 and sys.argv[1].lower() == "reset"
+    reset_flag = len(sys.argv) > 1 and sys.argv[1].lower().lstrip('-') == "reset"
     initialize_database(reset=reset_flag)

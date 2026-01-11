@@ -5,14 +5,14 @@ def add_default_tasks(connection):
     cursor = connection.cursor()
 
     default_tasks = [
-        ("Osta maitoa", 0),
-        ("Tee kotitehtävät", 0),
-        ("Siivoa huone", 1),
-        ("Käy lenkillä", 0),  
+        ("Osta maitoa", True),
+        ("Tee kotitehtävät", False),
+        ("Siivoa huone", True),
+        ("Käy lenkillä", False),  
     ]
 
     cursor.executemany(
-        "INSERT INTO tasks (task, done) VALUES (?, ?);",
+        "INSERT INTO tasks (task, done) VALUES (%s, %s);",
         default_tasks
     )
 

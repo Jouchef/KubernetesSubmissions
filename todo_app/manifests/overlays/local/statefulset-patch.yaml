@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: todo-postgres-stset
+  namespace: project
+spec:
+  volumeClaimTemplates:
+    - metadata:
+        name: todo-postgres-data-storage # Pidä samana kuin base-versiossa
+      spec:
+        storageClassName: local-path     # Tämä lisätään lokaaliin versioon
