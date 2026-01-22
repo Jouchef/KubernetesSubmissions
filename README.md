@@ -287,3 +287,36 @@ helm repo update
       1. Use the `kubectl port-forward GRAFANAPODNAME 3000` to access the web ui. 
       2. Check the Overview - Grafana section on how to get the username and password for login.
 
+## Work instruction for Workload Identity Federation to connect github and Google Cloud
+
+[How to use Github Actions with Google's Workload Identity Federation](https://www.youtube.com/watch?v=ZgVhU5qvK1M)
+- the above video explained this well to me.
+- Info in the video is partly deprecated when granting access to the pool
+
+- **Pool** manages a group of identities and their access to GC resources. It is like a *keyring*.
+- **Provider** issues *keys* to the *keyring*. 
+  - Provider can be anyone as long as they support OIDC for example: Github, Azure, AWS...
+  - These keys are valid for one time use only and last only specific time.
+
+1. Activate IAM Service Account Credentials API from gcp API Library
+2. Go to Workload Identity Pool in GCC and create a new pool
+3. Then add a provider, which in this case is [Github](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-google-cloud-platform)
+   ![Provider details filled in for Github](image.png)
+4. Configure provider attributes
+   ![Attributes for repository identification](image-1.png)
+   1. assertion.sub --> google.subject  
+      1. Assertion.sub looks like `repo:<github-repository>:environment:<environment>` ([more about environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments))
+   2. assertion.repository --> attribute.repository
+      1. Gets repository name from Github and saves it to attribute.repository
+      2. At the bottom of the picture we add a condition to only allow acces from my own repository.
+5. Then we need to define access permissions for the pool 
+   ![Access granting](image-2.png)
+   1. I used the service account impersonation because there was more info about that approach
+   2. I created service account and gave it this [role](https://docs.cloud.google.com/iam/docs/roles-permissions/artifactregistry#artifactregistry.admin)
+      1. Not sure if this is too much
+   3. Then I ruled down which identities can access the service account.
+6. Move to Github to create the configuration for service account [manual](https://github.com/google-github-actions/auth?tab=readme-ov-file#indirect-wif)
+   1. This command will get you your workflow identity provider. save it github secrets.
+      1. `gcloud iam workload-identity-pools providers describe "<providerid>" --
+project="<project>" --location="global" --workload-identity-pool="<poolname>" --format="value(name)"`
+   2. Save your service acount to github secrets `.......iam.gserviceaccount.com` 
