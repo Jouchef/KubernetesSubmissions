@@ -21,7 +21,8 @@ spec:
             claimName: server-claim
       containers:
         - name: server-container
-          image: jouchef/server:2.6.1
+          image: PROJECT_FRONT/IMAGE
+          #image: jouchef/server:2.6.1
           env:
             - name: FRONT-PORT
               value: "3006"
@@ -39,7 +40,8 @@ spec:
             - name: server-volume
               mountPath: /app/static
         - name: backend-container
-          image: jouchef/backend:2.10.3
+          image: PROJECT_BACK/IMAGE
+          #image: jouchef/backend:2.10.3
           ports:
             - name: backend-port
               containerPort: 3007   #This need to be same as env BACKEND-PORT
