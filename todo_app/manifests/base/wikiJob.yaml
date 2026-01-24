@@ -13,6 +13,7 @@ spec:
         spec:
           containers:
           - name: wiki-script
-            image: jouchef/wikiscript:2.9.6
+            image: PROJECT_WIKISCRIPT/IMAGE
+            #image: jouchef/wikiscript:2.9.6
             imagePullPolicy: IfNotPresent
           restartPolicy: Never 

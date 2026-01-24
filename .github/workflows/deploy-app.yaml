@@ -14,7 +14,8 @@ env:
   REGISTRY: europe-north1-docker.pkg.dev
   REPOSITORY: dwk-registry
   FRONT_IMAGE: todo-front-image               #This appears in Artifact registry
-  BACK_IMAGE: todo-back-image
+  BACK_IMAGE: todo-back-image                 #This appears in Artifact registry
+  WIKI_IMAGE: wiki-image                      #This appears in Artifact registry
   SERVICE: server-dep                   #Deployment's name
   SERVICE_PATH: './todo_app/manifests'
   BRANCH: ${{ github.ref_name }}
@@ -30,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6   #v6 is currently the latest one
+        uses: actions/checkout@v6   
 
       - name: 'Authenticate to Google Cloud'
         uses: google-github-actions/auth@v3
@@ -54,6 +55,7 @@ jobs:
           cluster_name: '${{ env.GKE_CLUSTER }}'
           location: '${{ env.GKE_ZONE }}'
 
+      #FRONT
       - name : 'Form the front image name'
         run: echo "FRONT_IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$FRONT_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
@@ -63,6 +65,7 @@ jobs:
       - name: 'Publish front'
         run: docker push $FRONT_IMAGE_TAG
 
+      #BACK
       - name : 'Form the back image name'
         run: echo "BACK_IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$BACK_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
@@ -72,12 +75,24 @@ jobs:
       - name: 'Publish back'
         run: docker push $BACK_IMAGE_TAG
 
+      #WIKISCRIPT
+      - name : 'Form the wiki image name'
+        run: echo "WIKI_IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$WIKI_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+
+      - name: 'Build wiki'
+        run: docker build --tag $WIKI_IMAGE_TAG ./todo_app/todo_script/
+
+      - name: 'Publish wiki'
+        run: docker push $WIKI_IMAGE_TAG
+
+
       - name: 'Deploy'
         run: |-
           kubectl apply -f admin/gke_manifests/ 
           cd ./todo_app/manifests/overlays/gke
           kustomize edit set image PROJECT_FRONT/IMAGE=$FRONT_IMAGE_TAG
           kustomize edit set image PROJECT_BACK/IMAGE=$BACK_IMAGE_TAG
+          kustomize edit set image PROJECT_WIKISCRIPT/IMAGE=$WIKI_IMAGE_TAG
           kustomize build .
           kustomize build . | kubectl apply -f -
           NS=$(kubectl get -f ../../base/projectNamespace.yaml -o jsonpath="{.metadata.name}")
