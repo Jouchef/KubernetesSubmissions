@@ -10,7 +10,7 @@ resources:
   - wikiJob.yaml
 images:
   - name: PROJECT_FRONT/IMAGE
-    newName: jouchef/server:latest
+    newName: jouchef/server:2.6.1
   - name: PROJECT_BACK/IMAGE
-    newName: jouchef/backend:latest
+    newName: jouchef/backend:2.10.3
   
