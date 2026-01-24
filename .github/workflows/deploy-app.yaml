@@ -13,7 +13,8 @@ env:
   GKE_ZONE: europe-north1-b
   REGISTRY: europe-north1-docker.pkg.dev
   REPOSITORY: dwk-registry
-  IMAGE: todo-front-image               #This appears in Artifact registry
+  FRONT_IMAGE: todo-front-image               #This appears in Artifact registry
+  BACK_IMAGE: todo-back-image
   SERVICE: server-dep                   #Deployment's name
   SERVICE_PATH: './todo_app/manifests'
   BRANCH: ${{ github.ref_name }}
@@ -53,20 +54,30 @@ jobs:
           cluster_name: '${{ env.GKE_CLUSTER }}'
           location: '${{ env.GKE_ZONE }}'
 
-      - name : 'Form the image name'
-        run: echo "IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+      - name : 'Form the front image name'
+        run: echo "FRONT_IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$FRONT_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
-      - name: Build
-        run: docker build --tag $IMAGE_TAG ./todo_app/app/
+      - name: 'Build front'
+        run: docker build --tag $FRONT_IMAGE_TAG ./todo_app/app/
 
-      - name: Publish
-        run: docker push $IMAGE_TAG
+      - name: 'Publish front'
+        run: docker push $FRONT_IMAGE_TAG
 
-      - name: Deploy
+      - name : 'Form the back image name'
+        run: echo "BACK_IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$BACK_IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+
+      - name: 'Build back'
+        run: docker build --tag $BACK_IMAGE_TAG ./todo_app/data/
+
+      - name: 'Publish back'
+        run: docker push $BACK_IMAGE_TAG
+
+      - name: 'Deploy'
         run: |-
           kubectl apply -f admin/gke_manifests/ 
           cd ./todo_app/manifests/overlays/gke
-          kustomize edit set image PROJECT_FRONT/IMAGE=$IMAGE_TAG
+          kustomize edit set image PROJECT_FRONT/IMAGE=$FRONT_IMAGE_TAG
+          kustomize edit set image PROJECT_BACK/IMAGE=$BACK_IMAGE_TAG
           kustomize build .
           kustomize build . | kubectl apply -f -
           NS=$(kubectl get -f ../../base/projectNamespace.yaml -o jsonpath="{.metadata.name}")
