@@ -7,6 +7,7 @@ on:
       - '.github/workflows/deploy-app.yaml'
 
 env:
+  PROJECT_ID: '${{ secrets.GKE_PROJECT }}'            #Saved to Github secrets
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
   REGISTRY: europe-north1-docker.pkg.dev
@@ -47,7 +48,7 @@ jobs:
       - name: 'Get GKE credentials'
         uses: 'google-github-actions/get-gke-credentials@v3'
         with:
-          project_id: '${{ secrets.GKE_PROJECT }}'                                #Saved to Github secrets
+          project_id: '${{ env.PROJECT_id }}'                                
           cluster_name: '${{ env.GKE_CLUSTER }}'
           location: '${{ env.GKE_ZONE }}'
 
