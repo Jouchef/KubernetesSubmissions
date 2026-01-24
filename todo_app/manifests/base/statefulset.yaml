@@ -22,7 +22,7 @@ spec:
               containerPort: 5432
           env:
             - name: POSTGRES_USER
-              value: todo
+              value: todo                 #These are not yet handled properly
             - name: POSTGRES_PASSWORD
               value: secretpassword
             - name: POSTGRES_DB

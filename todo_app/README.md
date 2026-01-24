@@ -15,15 +15,14 @@
    1. First it creates "shared" namespace
    2. Second it creates gateway for all apps
       1. This listens for all namespaces and handles http traffic (not https)
-4. Go to todo-folder
-   1. run `kubectl apply -k manifests/overlays/gke/`
+4. From root folder run `kubectl apply -k todo_app/manifests/overlays/gke/`
       1. This uses Kustomize to run GKE tailored initialisation
 5. Check the sites address with
-   1. `kubectl get gateway -n shared`
+   1. `kubectl get gateway -n shared` (It might take a while for it to appear.)
 6. Go to the ip-address/todo to see the site. 
 
 # INSTRUCTIONS FOR DATABASE RESETTING
 1. Go inside of the backend container
-   1. `kubectl exec -it server-dep-5c7d64ff66-rw5l7 -c backend-container -- bash`
+   1. `kubectl exec -it server-dep-... -c backend-container -- bash`
 2. Run the initialiase command with reset flag
    1. `python3 initialize_database.py -reset`

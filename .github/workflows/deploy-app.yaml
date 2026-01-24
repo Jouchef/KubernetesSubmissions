@@ -3,7 +3,7 @@ name: Release application
 on:
   push:
     paths: 
-      - 'app/**'
+      - '.todo_app/app/**'
       - '.github/workflows/deploy-app.yaml'
 
 env:
@@ -12,8 +12,8 @@ env:
   GKE_ZONE: europe-north1-b
   REGISTRY: europe-north1-docker.pkg.dev
   REPOSITORY: dwk-registry
-  IMAGE: server-image
-  SERVICE: server-dep
+  IMAGE: todo-front-image               #This appears in Artifact registry
+  SERVICE: server-dep                   #Deployment's name
   SERVICE_PATH: './todo_app/manifests'
   BRANCH: ${{ github.ref_name }}
 
@@ -23,12 +23,12 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: 'read'
+      contents: 'read'        #By default this is enabled, but because writing needs to be defined also this needs to be.
       id-token: 'write'
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6   #v6 is currently the latest one
 
       - name: 'Authenticate to Google Cloud'
         uses: google-github-actions/auth@v3
@@ -56,14 +56,16 @@ jobs:
         run: echo "IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
       - name: Build
-        run: docker build --tag $IMAGE_TAG .
+        run: docker build --tag $IMAGE_TAG ./todo_app/app/
 
       - name: Publish
         run: docker push $IMAGE_TAG
 
       - name: Deploy
         run: |-
-          kustomize edit set image PROJECT/IMAGE=$IMAGE_TAG
+          kubectl apply -f admin/gke_manifests/ 
+          cd ./todo_app/manifests/overlays/gke
+          kustomize edit set image PROJECT_FRONT/IMAGE=$IMAGE_TAG
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment $SERVICE
           kubectl get services -o wide
