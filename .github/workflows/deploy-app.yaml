@@ -68,6 +68,20 @@ jobs:
           kustomize edit set image PROJECT_FRONT/IMAGE=$IMAGE_TAG
           kustomize build . | kubectl apply -f -
           NS=$(kubectl get -f ../../base/projectNamespace.yaml -o jsonpath="{.metadata.name}")
-          kubectl rollout status deployment $SERVICE -n $NS   
+          kubectl rollout status deployment $SERVICE -n $NS || (
+            echo "------------------------------------------------"
+            echo "DEPLOYMENT FAILED - DEBUG INFO:"
+            echo "------------------------------------------------"
+            echo "1. POD STATUS:"
+            kubectl get pods -n $NS
+            echo "------------------------------------------------"
+            echo "2. POD EVENTS (Why is it failing?):"
+            kubectl describe pods -n $NS
+            echo "------------------------------------------------"
+            echo "3. APP LOGS (If crashing):"
+            # Hakee lokit deploymentin perusteella
+            kubectl logs deployment/$SERVICE -n $NS --all-containers=true --tail=50
+            exit 1
+          )   
           kubectl get services -o wide -n $NS
     
