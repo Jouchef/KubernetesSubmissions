@@ -67,6 +67,7 @@ jobs:
           cd ./todo_app/manifests/overlays/gke
           kustomize edit set image PROJECT_FRONT/IMAGE=$IMAGE_TAG
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $SERVICE
-          kubectl get services -o wide
+          NS=$(kubectl get -f ../../base/projectNamespace.yaml -o jsonpath="{.metadata.name}")
+          kubectl rollout status deployment $SERVICE -n $NS   
+          kubectl get services -o wide -n $NS
     
