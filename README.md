@@ -312,11 +312,14 @@ helm repo update
 5. Then we need to define access permissions for the pool 
    ![Access granting](image-2.png)
    1. I used the service account impersonation because there was more info about that approach
-   2. I created service account and gave it this [role](https://docs.cloud.google.com/iam/docs/roles-permissions/artifactregistry#artifactregistry.admin)
-      1. Not sure if this is too much
+   2. I created service account and gave these roles as in the [material](https://courses.mooc.fi/org/uh-cs/courses/devops-with-kubernetes/chapter-4/deployment-pipeline)
+      1. [Artifact Registry Create-on-Push Repository Administrator ](https://docs.cloud.google.com/iam/docs/roles-permissions/artifactregistry#artifactregistry.admin)
+      2. Kubernetes Engine Service Agent
+      3. Storage Admin
+      4. Artifact Registry Administrator
    3. Then I ruled down which identities can access the service account.
 6. Move to Github to create the configuration for service account [manual](https://github.com/google-github-actions/auth?tab=readme-ov-file#indirect-wif)
    1. This command will get you your workflow identity provider. save it github secrets.
       1. `gcloud iam workload-identity-pools providers describe "<providerid>" --
 project="<project>" --location="global" --workload-identity-pool="<poolname>" --format="value(name)"`
-   2. Save your service acount to github secrets `.......iam.gserviceaccount.com` 
+   1. Save your service acount to github secrets `.......iam.gserviceaccount.com` 
