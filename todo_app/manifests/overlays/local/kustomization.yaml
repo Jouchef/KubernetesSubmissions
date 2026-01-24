@@ -10,3 +10,4 @@ resources:
 patches:
   - path: claim-patch.yaml
   - path: statefulset-patch.yaml
+  - path: image-names.yaml          #This has not been tested yet locally

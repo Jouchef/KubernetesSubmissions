@@ -8,9 +8,4 @@ resources:
   - statefulset.yaml
   - deployment.yaml
   - wikiJob.yaml
-images:
-  - name: PROJECT_FRONT/IMAGE
-    newName: jouchef/server:2.6.1
-  - name: PROJECT_BACK/IMAGE
-    newName: jouchef/backend:2.10.3
   
