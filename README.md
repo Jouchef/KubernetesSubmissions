@@ -34,6 +34,11 @@
 - [3.2](https://github.com/Jouchef/KubernetesSubmissions/tree/3.2/Log_output)
 - [3.3](https://github.com/Jouchef/KubernetesSubmissions/tree/3.3/Log_output)
 - [3.4](https://github.com/Jouchef/KubernetesSubmissions/tree/3.4/pingpong)
+- [3.5](https://github.com/Jouchef/KubernetesSubmissions/tree/3.5/todo_app)
+- [3.6](https://github.com/Jouchef/KubernetesSubmissions/tree/3.6/todo_app)
+- [3.7](https://github.com/Jouchef/KubernetesSubmissions/tree/3.7/todo_app)
+- [3.8](https://github.com/Jouchef/KubernetesSubmissions/tree/3.8/todo_app)
+- [3.9](https://github.com/Jouchef/KubernetesSubmissions/tree/3.8?tab=readme-ov-file#Exercise-3.9-DBaaS-vs-DIY)
 
 
 ## Commands
@@ -323,3 +328,29 @@ helm repo update
       1. `gcloud iam workload-identity-pools providers describe "<providerid>" --
 project="<project>" --location="global" --workload-identity-pool="<poolname>" --format="value(name)"`
    1. Save your service acount to github secrets `.......iam.gserviceaccount.com` 
+
+
+## Exercise 3.9 DBaaS vs DIY
+
+This is a comparison between using database as a service or doing it inside of the cluster with cronjobs.
+
+### Required work
+With DBaaS there is a lot less work to do especially with upkeeping the database. Updates are done automatically. User just needs to inform the timeframes when it is okay to do the update. Scaling is done automatically if chosen so. 
+
+Let's say that the diy solution involves Statefulset with postgres:VERSION-alpine image. Especially major version updates are a lot of manual work. With multiple replicas the updates can be rolling updates but the maintainer needs to make sure that the versions are compatible with each other. The image need to be updated by the maintainer by updating the Statefulset. Volume  resizing is often a manual endeavor. 
+
+### Costs
+
+The instance rate for equivalent cloud SQL is about 45% higher than the GCE. Storage cost is about the same. In the cloud SQL the user has to pay also for the management layer on top. 
+
+In the DIY version the DB can use the same processing power than the rest of the cluster. It only needs the database volume space on top. Also user can request more exact amount of processing power and ram than in Cloud SQL where there is only specific sizes available. 
+
+### Backups
+
+The Cloud SQL provides natively very easy to setup backup solution. The user can recover the database to the exact state in wanted time. User can choose how long time backups are held. 
+
+User can use the pg_dumb to create backups with cronjob. For this the user needs to authenticate the backup solution to write to the bucket. There is no easy way of getting same kind of point-in-time recoverys as in cloud SQL. 
+
+### Ease of use
+
+The DIY solution requires a dedicated Kubernetes professional to run the backup solution. Of course the integrated backup solution is a lot less of a hassle. Also it is important to think how critical the information is. The more critical it is, the more it would be a good idea to implement it in Cloud SQL to mitigate the risk. 
