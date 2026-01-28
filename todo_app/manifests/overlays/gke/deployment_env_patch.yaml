@@ -9,5 +9,5 @@ spec:
       containers:
         - name: backend-container
           env:
-            - name: BASE_URL     # Locally there is no base url and todo application is available at /. In GKE we have applied base url and the site is available in /todo
-              value: "/todo"
+            - name: BASE_URL     # Locally there is no base url and todo application is available at /. In GKE we have applied base url and the site is available in /todotest
+              value: "/todotest"

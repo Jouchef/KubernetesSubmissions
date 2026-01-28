@@ -7,7 +7,7 @@ base_url = os.environ.get("BASE_URL", "")
 
 app = Flask(__name__)
 
-@app.route("/todos", methods=["GET", "POST"])
+@app.route("/todostest", methods=["GET", "POST"])
 def tasks():
     if request.method == "GET":
         tasks = task_reposetory.get_all_tasks()

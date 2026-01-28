@@ -5,5 +5,5 @@ task="Lue artikkeli aiheesta: ${rnd_url}"
 
 echo "Lähetetään POST-pyyntö random urlista: ${rnd_ur}"
 curl \
-    -L -X POST http://backend-svc:2345/todos \
+    -L -X POST http://backend-svc:2345/todostest \
     -d "task=$task"

@@ -33,12 +33,12 @@ spec:
             - name: IMGCACHETIME
               value: "600"  #seconds
             - name: IMAGEPATH
-              value: "images/kuva.jpg"   # This directory will be inside of /static
+              value: "images/kuva.jpg"   # This directory will be inside of /statictest
             - name: PICURL
               value: "https://picsum.photos/300/200.jpg"
           volumeMounts:
             - name: server-volume
-              mountPath: /app/static
+              mountPath: /app/statictest
         - name: backend-container
           image: PROJECT_BACK/IMAGE
           #image: jouchef/backend:2.10.3
@@ -60,13 +60,13 @@ spec:
               value: "secretpassword"
           readinessProbe:
             httpGet:
-              path: /todos    
+              path: /todostest    
               port: backend-port    
             initialDelaySeconds: 10
             periodSeconds: 5
           livenessProbe:
             httpGet:
-              path: /todos
+              path: /todostest
               port: backend-port
             initialDelaySeconds: 15
             periodSeconds: 20

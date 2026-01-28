@@ -46,7 +46,7 @@ def homepage():
     get_pic()
     backend_svc = os.environ.get("BACKENDSVCURL")
     svc_port = os.environ.get("SVCPORT")
-    tasks = requests.get(f"http://{backend_svc}:{svc_port}/todos").json()
+    tasks = requests.get(f"http://{backend_svc}:{svc_port}/todostest").json()
     print(f"tasks: {tasks}")
     return render_template("index.html", tasks=tasks, imgPath=relImagePath)
 

@@ -12,7 +12,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /todos
+        value: /todostest
     backendRefs:
     - name: backend-svc
       port: 2345
@@ -20,7 +20,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /todo
+        value: /todotest
     filters:
     - type: URLRewrite
       urlRewrite:
@@ -34,7 +34,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /static
+        value: /statictest
     backendRefs:
     - name: server-svc
       port: 2345

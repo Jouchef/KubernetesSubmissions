@@ -211,7 +211,7 @@ fs.inotify.max_user_watches = 524288
          -  `gcloud container clusters get-credentials dwk-cluster --zone europe-north1-b`
 -  When monitoring the website `kubectl logs -l app=server -c backend-container -f`
    -  These `35.191.233.50 - - [11/Jan/2026 15:46:23] "GET / HTTP/1.1" 404 -` are Google healthchecks
-      -  By default they are done to the address /. In my case they should be done to /todos
+      -  By default they are done to the address /. In my case they should be done to /todostest
    -  I created healthcheck.yaml to tell Google healthcheck the right address. 
 
  
