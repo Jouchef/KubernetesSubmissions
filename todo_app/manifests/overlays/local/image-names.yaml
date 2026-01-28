@@ -6,3 +6,5 @@ images:
     newName: jouchef/server:2.6.1
   - name: PROJECT_BACK/IMAGE
     newName: jouchef/backend:2.10.3
+  - name: PROJECT_WIKISCRIPT/IMAGE
+    newName: jouchef/wikiscript:2.9.6

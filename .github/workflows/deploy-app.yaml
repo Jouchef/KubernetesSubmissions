@@ -3,9 +3,7 @@ name: Release application
 on:
   workflow_dispatch:
   push:
-    paths: 
-      - '.todo_app/app/**'
-      - '.github/workflows/deploy-app.yaml'
+
 
 env:
   PROJECT_ID: '${{ secrets.GKE_PROJECT }}'            #Saved to Github secrets
@@ -46,7 +44,7 @@ jobs:
         run: gcloud info
 
       - name: 'Configure Docker'
-        run: gcloud --quiet auth configure-docker europe-north1-docker.pkg.dev
+        run: gcloud --quiet auth configure-docker "$REGISTRY"    
 
       - name: 'Get GKE credentials'
         uses: 'google-github-actions/get-gke-credentials@v3'
@@ -90,12 +88,21 @@ jobs:
         run: |-
           kubectl apply -f admin/gke_manifests/ 
           cd ./todo_app/manifests/overlays/gke
+          if [[ "${GITHUB_REF#refs/heads/}" == "main" ]]; then
+            RAW_NS=$(kubectl create -f ../../base/projectNamespace.yaml --dry-run=client -o jsonpath="{.metadata.name}")
+          else
+            RAW_NS="${GITHUB_REF#refs/heads/}"
+          fi
+          NS=$(echo "$RAW_NS" | tr '[:upper:]' '[:lower:]' | sed 's/\//-/g')          #tr--> translates upper to lowercase; substitute / with - globally
+          echo "Namespace is now: $NS"
+          kubectl create namespace $NS --dry-run=client -o yaml | kubectl apply -f -
+          kubectl config set-context --current --namespace=$NS
+          kustomize edit set namespace $NS
           kustomize edit set image PROJECT_FRONT/IMAGE=$FRONT_IMAGE_TAG
           kustomize edit set image PROJECT_BACK/IMAGE=$BACK_IMAGE_TAG
           kustomize edit set image PROJECT_WIKISCRIPT/IMAGE=$WIKI_IMAGE_TAG
           kustomize build .
           kustomize build . | kubectl apply -f -
-          NS=$(kubectl get -f ../../base/projectNamespace.yaml -o jsonpath="{.metadata.name}")
           kubectl rollout status deployment $SERVICE -n $NS || (
             echo "------------------------------------------------"
             echo "DEPLOYMENT FAILED - DEBUG INFO:"

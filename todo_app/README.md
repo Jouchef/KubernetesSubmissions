@@ -11,15 +11,11 @@
 1. Setup you Google cloud account [Instructions here](https://courses.mooc.fi/org/uh-cs/courses/devops-with-kubernetes/chapter-4/introduction-to-google-kubernetes-engine)
 2. Deploy your cluster
    1. `gcloud container clusters create dwk-cluster --zone=europe-north1-b --release-channel=regular --disk-size=32 --num-nodes=3 --machine-type=e2-micro --gateway-api=standard --monitoring=NONE --logging=NONE`
-3. From root folder run `kubectl apply -f admin/gke_manifests/`
-   1. First it creates "shared" namespace
-   2. Second it creates gateway for all apps
-      1. This listens for all namespaces and handles http traffic (not https)
-4. From root folder run `kubectl apply -k todo_app/manifests/overlays/gke/`
-      1. This uses Kustomize to run GKE tailored initialisation
-5. Check the sites address with
+3. Github workflow will upload the application to your Google Artifact registry and GKE. These need to be setup beforehand.
+   1. Some info [here](https://github.com/Jouchef/KubernetesSubmissions?tab=readme-ov-file#work-instruction-for-workload-identity-federation-to-connect-github-and-google-cloud)
+4. After succesfull upload check the sites address with
    1. `kubectl get gateway -n shared` (It might take a while for it to appear.)
-6. Go to the ip-address/todo to see the site. 
+5. Go to the ip-address/todo to see the site. 
 
 # INSTRUCTIONS FOR DATABASE RESETTING
 1. Go inside of the backend container
