@@ -16,6 +16,11 @@
 4. After succesfull upload check the sites address with
    1. `kubectl get gateway -n shared` (It might take a while for it to appear.)
 5. Go to the ip-address/todo to see the site. 
+   1. You can inspect the loadbalancer configuration with:
+      1. `gcloud compute url-maps list` This lists you the gateway resources. Pick one which starts with `gkemg-...`
+      2. `gcloud compute url-maps describe <gkemg-alkuinen-nimi> --global` Get the configuration with this command. From here you can see the routing. 
+   2. You can inspect the local situation with
+      1. `kubectl describe gateway shared-gateway -n shared`
 
 # INSTRUCTIONS FOR DATABASE RESETTING
 1. Go inside of the backend container

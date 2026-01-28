@@ -1,0 +1,58 @@
+name: Delete environment on branch Delete
+
+on:
+  delete:
+
+
+env:
+  PROJECT_ID: '${{ secrets.GKE_PROJECT }}'
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+
+jobs:
+  delete-environment:
+    # Delete only branches. no tags
+    if: github.event.ref_type == 'branch'
+    name: Delete GKE Namespace
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write' # needed for Workload Identity Federation
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v6
+
+      - name: 'Authenticate to Google Cloud'
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT_MAIL }}
+
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: 'Get GKE credentials'
+        uses: 'google-github-actions/get-gke-credentials@v3'
+        with:
+          project_id: '${{ env.PROJECT_ID }}'
+          cluster_name: '${{ env.GKE_CLUSTER }}'
+          location: '${{ env.GKE_ZONE }}'
+
+      - name: 'Delete Namespace'
+        run: |-
+          BRANCH_NAME="${{ github.event.ref }}"
+
+          echo "Branch $BRANCH_NAME was deleted. Proceeding to deleting namespace from GKE"
+
+          NS=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/\//-/g')       #tr--> translates upper to lowercase; substitute / with - for every /
+
+          echo "Target namespace: $NS"
+
+          if kubectl get namespace $NS; then
+            kubectl delete namespace $NS
+            echo "Namespace $NS deleted successfully."
+          else
+            echo "Namespace $NS does not exist. No namespace deleted."
+          fi
