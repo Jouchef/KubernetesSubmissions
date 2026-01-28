@@ -38,7 +38,7 @@
 - [3.6](https://github.com/Jouchef/KubernetesSubmissions/tree/3.6/todo_app)
 - [3.7](https://github.com/Jouchef/KubernetesSubmissions/tree/3.7/todo_app)
 - [3.8](https://github.com/Jouchef/KubernetesSubmissions/tree/3.8/todo_app)
-- [3.9](https://github.com/Jouchef/KubernetesSubmissions/tree/3.8?tab=readme-ov-file#exercise-39-dbaas-vs-diy)
+- [3.9](https://github.com/Jouchef/KubernetesSubmissions/tree/3.9?tab=readme-ov-file#exercise-39-dbaas-vs-diy)
 
 
 ## Commands
