@@ -7,7 +7,15 @@ labels:
 resources:
   - ../../base
   - ingress.yaml
+
+images:
+  - name: PROJECT_FRONT/IMAGE           
+    newName: jouchef/server:2.6.1
+  - name: PROJECT_BACK/IMAGE
+    newName: jouchef/backend:2.10.3
+  - name: PROJECT_WIKISCRIPT/IMAGE
+    newName: jouchef/wikiscript:2.9.6
+
 patches:
   - path: claim-patch.yaml
   - path: statefulset-patch.yaml
-  - path: image-names.yaml          #This has not been tested yet locally

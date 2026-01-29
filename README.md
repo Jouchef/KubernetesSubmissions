@@ -39,6 +39,7 @@
 - [3.7](https://github.com/Jouchef/KubernetesSubmissions/tree/3.7/todo_app)
 - [3.8](https://github.com/Jouchef/KubernetesSubmissions/tree/3.8/todo_app)
 - [3.9](https://github.com/Jouchef/KubernetesSubmissions/tree/3.9?tab=readme-ov-file#exercise-39-dbaas-vs-diy)
+- [3.11](https://github.com/Jouchef/KubernetesSubmissions/tree/3.11/todo_app)
 
 
 ## Commands
@@ -74,6 +75,7 @@
 | kubectl create namespace                                          | create new namespace                                                                                                                     |
 | `kubectl config get-contexts`                                     | List all possible contexts (GKE, local,...)                                                                                              |
 | `kubectl config use-context NAME`                                 | Change the contexts to NAME                                                                                                              |
+| `Kubectl top pod` / `kubectl top nodes`                           | See the consumption of memory and cpu                                                                                                    |
 
 
 
@@ -122,6 +124,7 @@ Install it with apt or other
 - If you do not use the latest one there might be errors.
 - I have installed the .tar package so I have to use the integrated tool to update the CLI
 [Here is the suppot schedule for GKE versions](https://docs.cloud.google.com/kubernetes-engine/docs/release-schedule)
+
 | Command                                                                                                | About                                                                      |
 | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
 | `gcloud init`                                                                                          | Initialize gcloud CLI                                                      |
